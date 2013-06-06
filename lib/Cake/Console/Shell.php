@@ -693,9 +693,12 @@ class Shell extends Object {
 			return true;
 		}
 
+		/*
 		$prompt = __d('cake_console', 'PHPUnit is not installed. Do you want to bake unit test files anyway?');
 		$unitTest = $this->in($prompt, array('y', 'n'), 'y');
 		$result = strtolower($unitTest) === 'y' || strtolower($unitTest) === 'yes';
+		*/
+		$result = false;
 
 		if ($result) {
 			$this->out();

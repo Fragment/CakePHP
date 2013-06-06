@@ -233,11 +233,13 @@ class ModelTask extends BakeTask {
 				$displayField = $this->findDisplayField($tempModel->schema());
 			}
 
+			/*
 			$prompt = __d('cake_console', "Would you like to supply validation criteria \nfor the fields in your model?");
 			$wannaDoValidation = $this->in($prompt, array('y','n'), 'y');
 			if (array_search($useTable, $this->_tables) !== false && strtolower($wannaDoValidation) === 'y') {
 				$validate = $this->doValidation($tempModel);
 			}
+			*/
 
 			$prompt = __d('cake_console', "Would you like to define model associations\n(hasMany, hasOne, belongsTo, etc.)?");
 			$wannaDoAssoc = $this->in($prompt, array('y','n'), 'y');
@@ -276,7 +278,7 @@ class ModelTask extends BakeTask {
 		$looksGood = $this->in(__d('cake_console', 'Look okay?'), array('y', 'n'), 'y');
 
 		if (strtolower($looksGood) === 'y') {
-			$vars = compact('associations', 'validate', 'primaryKey', 'useTable', 'displayField');
+			$vars = compact('fields', 'associations', 'validate', 'primaryKey', 'useTable', 'displayField');
 			$vars['useDbConfig'] = $this->connection;
 			if ($this->bake($currentModelName, $vars)) {
 				if ($this->_checkUnitTest()) {
