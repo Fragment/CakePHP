@@ -436,7 +436,12 @@ class FormHelper extends AppHelper {
 			$htmlAttributes['accept-charset'] = $options['encoding'];
 			unset($options['encoding']);
 		}
-
+		
+		foreach($this->validationErrors as $vmodel) {
+			if(!empty($vmodel))
+				$options['class'] = (isset($options['class']) && !empty($options['class'])) ? $options['class'].' form-error' : 'form-error';
+		}
+		
 		$htmlAttributes = array_merge($options, $htmlAttributes);
 
 		$this->fields = array();
