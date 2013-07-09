@@ -60,16 +60,9 @@ class TestAuthComponent extends AuthComponent {
 class AuthUser extends CakeTestModel {
 
 /**
- * name property
- *
- * @var string 'AuthUser'
- */
-	public $name = 'AuthUser';
-
-/**
  * useDbConfig property
  *
- * @var string 'test'
+ * @var string
  */
 	public $useDbConfig = 'test';
 
@@ -81,13 +74,6 @@ class AuthUser extends CakeTestModel {
  * @package       Cake.Test.Case.Controller.Component
  */
 class AuthTestController extends Controller {
-
-/**
- * name property
- *
- * @var string 'AuthTest'
- */
-	public $name = 'AuthTest';
 
 /**
  * uses property
@@ -204,13 +190,6 @@ class AuthTestController extends Controller {
 class AjaxAuthController extends Controller {
 
 /**
- * name property
- *
- * @var string 'AjaxAuth'
- */
-	public $name = 'AjaxAuth';
-
-/**
  * components property
  *
  * @var array
@@ -278,7 +257,7 @@ class AuthComponentTest extends CakeTestCase {
 /**
  * name property
  *
- * @var string 'Auth'
+ * @var string
  */
 	public $name = 'Auth';
 
@@ -1009,7 +988,7 @@ class AuthComponentTest extends CakeTestCase {
 		App::build(array(
 			'View' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'View' . DS)
 		));
-		$_SERVER['HTTP_X_REQUESTED_WITH'] = "XMLHttpRequest";
+		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
 
 		App::uses('Dispatcher', 'Routing');
 
@@ -1254,6 +1233,23 @@ class AuthComponentTest extends CakeTestCase {
 		$result = $this->Auth->redirectUrl();
 		$this->assertEquals('/users/home', $result);
 		$this->assertFalse($this->Auth->Session->check('Auth.redirect'));
+	}
+
+/**
+ * test redirectUrl with duplicate base.
+ *
+ * @return void
+ */
+	public function testRedirectSessionReadDuplicateBase() {
+		$this->Auth->request->webroot = '/waves/';
+		$this->Auth->request->base = '/waves';
+
+		Router::setRequestInfo($this->Auth->request);
+
+		$this->Auth->Session->write('Auth.redirect', '/waves/add');
+
+		$result = $this->Auth->redirectUrl();
+		$this->assertEquals('/waves/add', $result);
 	}
 
 /**

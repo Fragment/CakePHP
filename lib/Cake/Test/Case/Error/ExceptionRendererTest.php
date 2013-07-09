@@ -31,13 +31,6 @@ App::uses('Router', 'Routing');
 class AuthBlueberryUser extends CakeTestModel {
 
 /**
- * name property
- *
- * @var string 'AuthBlueberryUser'
- */
-	public $name = 'AuthBlueberryUser';
-
-/**
  * useTable property
  *
  * @var string
@@ -155,6 +148,7 @@ class ExceptionRendererTest extends CakeTestCase {
  */
 	public function setUp() {
 		parent::setUp();
+		Configure::write('Config.language', 'eng');
 		App::build(array(
 			'View' => array(
 				CAKE . 'Test' . DS . 'test_app' . DS . 'View' . DS

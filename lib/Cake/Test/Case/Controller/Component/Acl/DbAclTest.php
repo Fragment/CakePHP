@@ -35,7 +35,7 @@ class AclNodeTwoTestBase extends AclNode {
 /**
  * useDbConfig property
  *
- * @var string 'test'
+ * @var string
  */
 	public $useDbConfig = 'test';
 
@@ -57,14 +57,14 @@ class AroTwoTest extends AclNodeTwoTestBase {
 /**
  * name property
  *
- * @var string 'AroTwoTest'
+ * @var string
  */
 	public $name = 'AroTwoTest';
 
 /**
  * useTable property
  *
- * @var string 'aro_twos'
+ * @var string
  */
 	public $useTable = 'aro_twos';
 
@@ -86,14 +86,14 @@ class AcoTwoTest extends AclNodeTwoTestBase {
 /**
  * name property
  *
- * @var string 'AcoTwoTest'
+ * @var string
  */
 	public $name = 'AcoTwoTest';
 
 /**
  * useTable property
  *
- * @var string 'aco_twos'
+ * @var string
  */
 	public $useTable = 'aco_twos';
 
@@ -115,14 +115,14 @@ class PermissionTwoTest extends Permission {
 /**
  * name property
  *
- * @var string 'PermissionTwoTest'
+ * @var string
  */
 	public $name = 'PermissionTwoTest';
 
 /**
  * useTable property
  *
- * @var string 'aros_aco_twos'
+ * @var string
  */
 	public $useTable = 'aros_aco_twos';
 
@@ -283,7 +283,7 @@ class DbAclTest extends CakeTestCase {
 		$this->assertTrue($this->Acl->check('Samir', 'view', 'read'));
 		$this->assertTrue($this->Acl->check('root/users/Samir', 'ROOT/tpsReports/view', 'update'));
 
-		$this->assertFalse($this->Acl->check('root/users/Samir', 'ROOT/tpsReports/update','*'));
+		$this->assertFalse($this->Acl->check('root/users/Samir', 'ROOT/tpsReports/update', '*'));
 		$this->assertTrue($this->Acl->allow('root/users/Samir', 'ROOT/tpsReports/update', '*'));
 		$this->assertTrue($this->Acl->check('Samir', 'update', 'read'));
 		$this->assertTrue($this->Acl->check('root/users/Samir', 'ROOT/tpsReports/update', 'update'));
@@ -498,7 +498,7 @@ class DbAclTest extends CakeTestCase {
  * Generates a list of the current aro and aco structures and a grid dump of the permissions that are defined
  * Only designed to work with the db based ACL
  *
- * @param bool $treesToo
+ * @param boolean $treesToo
  * @return void
  */
 	protected function _debug($printTreesToo = false) {

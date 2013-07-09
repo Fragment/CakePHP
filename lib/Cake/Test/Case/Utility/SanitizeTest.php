@@ -28,16 +28,9 @@ App::uses('Sanitize', 'Utility');
 class SanitizeDataTest extends CakeTestModel {
 
 /**
- * name property
- *
- * @var string 'SanitizeDataTest'
- */
-	public $name = 'SanitizeDataTest';
-
-/**
  * useTable property
  *
- * @var string 'data_tests'
+ * @var string
  */
 	public $useTable = 'data_tests';
 }
@@ -50,16 +43,9 @@ class SanitizeDataTest extends CakeTestModel {
 class SanitizeArticle extends CakeTestModel {
 
 /**
- * name property
- *
- * @var string 'Article'
- */
-	public $name = 'SanitizeArticle';
-
-/**
  * useTable property
  *
- * @var string 'articles'
+ * @var string
  */
 	public $useTable = 'articles';
 }
@@ -285,12 +271,12 @@ class SanitizeTest extends CakeTestCase {
 		$this->assertEquals($expected, $result);
 
 		$string = "x' AND 1=(SELECT COUNT(*) FROM users); --";
-		$expected = "xAND1SELECTCOUNTFROMusers";
+		$expected = 'xAND1SELECTCOUNTFROMusers';
 		$result = Sanitize::paranoid($string);
 		$this->assertEquals($expected, $result);
 
 		$string = "x'; DROP TABLE members; --";
-		$expected = "xDROPTABLEmembers";
+		$expected = 'xDROPTABLEmembers';
 		$result = Sanitize::paranoid($string);
 		$this->assertEquals($expected, $result);
 	}

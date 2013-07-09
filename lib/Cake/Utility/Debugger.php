@@ -230,24 +230,24 @@ class Debugger {
 			case E_USER_ERROR:
 				$error = 'Fatal Error';
 				$level = LOG_ERR;
-			break;
+				break;
 			case E_WARNING:
 			case E_USER_WARNING:
 			case E_COMPILE_WARNING:
 			case E_RECOVERABLE_ERROR:
 				$error = 'Warning';
 				$level = LOG_WARNING;
-			break;
+				break;
 			case E_NOTICE:
 			case E_USER_NOTICE:
 				$error = 'Notice';
 				$level = LOG_NOTICE;
-			break;
+				break;
 			case E_DEPRECATED:
 			case E_USER_DEPRECATED:
 				$error = 'Deprecated';
 				$level = LOG_NOTICE;
-			break;
+				break;
 			default:
 				return;
 		}
@@ -550,7 +550,7 @@ class Debugger {
 				// Sniff for globals as !== explodes in < 5.4
 				if ($key === 'GLOBALS' && is_array($val) && isset($val['GLOBALS'])) {
 					$val = '[recursion]';
-				} else if ($val !== $var) {
+				} elseif ($val !== $var) {
 					$val = self::_export($val, $depth, $indent);
 				}
 				$vars[] = $break . self::exportVar($key) .
@@ -701,7 +701,7 @@ class Debugger {
  *    straight HTML output, or 'txt' for unformatted text.
  * @param array $strings Template strings to be used for the output format.
  * @return string
- * @deprecated Use Debugger::outputAs() and  Debugger::addFormat(). Will be removed
+ * @deprecated Use Debugger::outputAs() and Debugger::addFormat(). Will be removed
  *   in 3.0
  */
 	public function output($format = null, $strings = array()) {

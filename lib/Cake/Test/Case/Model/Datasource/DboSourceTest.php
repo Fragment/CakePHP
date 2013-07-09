@@ -569,7 +569,7 @@ class DboSourceTest extends CakeTestCase {
 	}
 
 /**
- * testReconnect method
+ * Tests if the connection can be re-established and that the new (optional) config is set.
  *
  * @return void
  */
@@ -741,11 +741,11 @@ class DboSourceTest extends CakeTestCase {
  * @return void
  */
 	public function testGetLogParams() {
-		$this->testDb->logQuery('Query 1', array(1,2,'abc'));
+		$this->testDb->logQuery('Query 1', array(1, 2, 'abc'));
 		$this->testDb->logQuery('Query 2', array('field1' => 1, 'field2' => 'abc'));
 
 		$log = $this->testDb->getLog();
-		$expected = array('query' => 'Query 1', 'params' => array(1,2,'abc'), 'affected' => '', 'numRows' => '', 'took' => '');
+		$expected = array('query' => 'Query 1', 'params' => array(1, 2, 'abc'), 'affected' => '', 'numRows' => '', 'took' => '');
 		$this->assertEquals($expected, $log['log'][0]);
 		$expected = array('query' => 'Query 2', 'params' => array('field1' => 1, 'field2' => 'abc'), 'affected' => '', 'numRows' => '', 'took' => '');
 		$this->assertEquals($expected, $log['log'][1]);
@@ -861,7 +861,7 @@ class DboSourceTest extends CakeTestCase {
 		$Comment->find('all', array('recursive' => 2)); // ensure Model descriptions are saved
 		$this->db->getLog();
 
-		// case: Comment  belongsTo User and Article
+		// case: Comment belongsTo User and Article
 		$Comment->unbindModel(array(
 			'hasOne' => array('Attachment')
 		));

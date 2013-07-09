@@ -535,6 +535,9 @@ class App {
 		if (!isset(self::$_classMap[$className])) {
 			return false;
 		}
+		if (strpos($className, '..') !== false) {
+			return false;
+		}
 
 		$parts = explode('.', self::$_classMap[$className], 2);
 		list($plugin, $package) = count($parts) > 1 ? $parts : array(null, current($parts));
@@ -590,7 +593,7 @@ class App {
  *                    an single array to $type,
  * @param string $name Name of the Class or a unique name for the file
  * @param boolean|array $parent boolean true if Class Parent should be searched, accepts key => value
- *              array('parent' => $parent ,'file' => $file, 'search' => $search, 'ext' => '$ext');
+ *              array('parent' => $parent, 'file' => $file, 'search' => $search, 'ext' => '$ext');
  *              $ext allows setting the extension of the file name
  *              based on Inflector::underscore($name) . ".$ext";
  * @param array $search paths to search for files, array('path 1', 'path 2', 'path 3');
