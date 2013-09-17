@@ -67,7 +67,7 @@ endif;
 		$settings = Cache::settings();
 		if (!empty($settings)):
 			echo '<span class="notice success">';
-				echo __d('cake_dev', 'The %s is being used for core caching. To change the config edit APP/Config/core.php ', '<em>'. $settings['engine'] . 'Engine</em>');
+				echo __d('cake_dev', 'The %s is being used for core caching. To change the config edit APP/Config/core.php ', '<em>' . $settings['engine'] . 'Engine</em>');
 			echo '</span>';
 		else:
 			echo '<span class="notice">';
@@ -101,19 +101,19 @@ if (isset($filePresent)):
 	} catch (Exception $connectionError) {
 		$connected = false;
 		$errorMsg = $connectionError->getMessage();
-		if (method_exists($connectionError, 'getAttributes')) {
+		if (method_exists($connectionError, 'getAttributes')):
 			$attributes = $connectionError->getAttributes();
-			if (isset($errorMsg['message'])) {
+			if (isset($errorMsg['message'])):
 				$errorMsg .= '<br />' . $attributes['message'];
-			}
-		}
+			endif;
+		endif;
 	}
 ?>
 <p>
 	<?php
 		if ($connected && $connected->isConnected()):
 			echo '<span class="notice success">';
-	 			echo __d('cake_dev', 'Cake is able to connect to the database.');
+				echo __d('cake_dev', 'Cake is able to connect to the database.');
 			echo '</span>';
 		else:
 			echo '<span class="notice">';
@@ -127,13 +127,13 @@ if (isset($filePresent)):
 <?php endif; ?>
 <?php
 	App::uses('Validation', 'Utility');
-	if (!Validation::alphaNumeric('cakephp')) {
+	if (!Validation::alphaNumeric('cakephp')):
 		echo '<p><span class="notice">';
 			echo __d('cake_dev', 'PCRE has not been compiled with Unicode support.');
 			echo '<br/>';
 			echo __d('cake_dev', 'Recompile PCRE with Unicode support by adding <code>--enable-unicode-properties</code> when configuring');
 		echo '</span></p>';
-	}
+	endif;
 ?>
 
 <p>

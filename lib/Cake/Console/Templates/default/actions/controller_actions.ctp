@@ -25,11 +25,8 @@
  * @return void
  */
 	public function <?php echo $admin ?>index() {
-		$this->paginate = array('recursive' => 0);
-		$this->set('<?php echo $pluralName ?>', $this->paginate());
-<?php if ($admin): ?>
-		$this->Session->write('return_url', $this->request->here);
-<?php endif; ?>
+		$this-><?php echo $currentModelName ?>->recursive = 0;
+		$this->set('<?php echo $pluralName ?>', $this->Paginator->paginate());
 	}
 
 /**
@@ -40,14 +37,11 @@
  * @return void
  */
 	public function <?php echo $admin ?>view($id = null) {
-		if (!$this-><?php echo $currentModelName; ?>->exists($id))
-		{
+		if (!$this-><?php echo $currentModelName; ?>->exists($id)) {
 			throw new NotFoundException(__('Invalid <?php echo strtolower($singularHumanName); ?>'));
 		}
-		$this->set('<?php echo $singularName; ?>', $this-><?php echo $currentModelName; ?>->findById($id, null, null, 1));
-<?php if ($admin): ?>
-		$this->Session->write('return_url', $this->request->here);
-<?php endif; ?>
+		$options = array('conditions' => array('<?php echo $currentModelName; ?>.' . $this-><?php echo $currentModelName; ?>->primaryKey => $id));
+		$this->set('<?php echo $singularName; ?>', $this-><?php echo $currentModelName; ?>->find('first', $options));
 	}
 
 <?php $compact = array(); ?>
@@ -57,22 +51,16 @@
  * @return void
  */
 	public function <?php echo $admin ?>add() {
-		if ($this->request->is('post'))
-		{
+		if ($this->request->is('post')) {
 			$this-><?php echo $currentModelName; ?>->create();
-			if ($this-><?php echo $currentModelName; ?>->save($this->request->data))
-			{
+			if ($this-><?php echo $currentModelName; ?>->save($this->request->data)) {
 <?php if ($wannaUseSession): ?>
-				$this->Session->setFlash(__('The <?php echo strtolower($singularHumanName); ?> has been saved'));
-				$this->redirect($this->getReturnUrl());
-<?php else: ?>
-				$this->flash(__('<?php echo ucfirst(strtolower($currentModelName)); ?> saved.'), array('action' => 'index'));
-<?php endif; ?>
-			}
-			else
-			{
-<?php if ($wannaUseSession): ?>
+				$this->Session->setFlash(__('The <?php echo strtolower($singularHumanName); ?> has been saved.'));
+				return $this->redirect(array('action' => 'index'));
+			} else {
 				$this->Session->setFlash(__('The <?php echo strtolower($singularHumanName); ?> could not be saved. Please, try again.'));
+<?php else: ?>
+				return $this->flash(__('The <?php echo strtolower($singularHumanName); ?> has been saved.'), array('action' => 'index'));
 <?php endif; ?>
 			}
 		}
@@ -102,31 +90,23 @@
  * @return void
  */
 	public function <?php echo $admin; ?>edit($id = null) {
-		if (!$this-><?php echo $currentModelName; ?>->exists($id))
-		{
+		if (!$this-><?php echo $currentModelName; ?>->exists($id)) {
 			throw new NotFoundException(__('Invalid <?php echo strtolower($singularHumanName); ?>'));
 		}
-		if ($this->request->is('post') || $this->request->is('put'))
-		{
-			if ($this-><?php echo $currentModelName; ?>->save($this->request->data))
-			{
+		if ($this->request->is(array('post', 'put'))) {
+			if ($this-><?php echo $currentModelName; ?>->save($this->request->data)) {
 <?php if ($wannaUseSession): ?>
-				$this->Session->setFlash(__('The <?php echo strtolower($singularHumanName); ?> has been saved'));
-				$this->redirect($this->getReturnUrl());
-<?php else: ?>
-				$this->flash(__('The <?php echo strtolower($singularHumanName); ?> has been saved.'), array('action' => 'index'));
-<?php endif; ?>
-			}
-			else
-			{
-<?php if ($wannaUseSession): ?>
+				$this->Session->setFlash(__('The <?php echo strtolower($singularHumanName); ?> has been saved.'));
+				return $this->redirect(array('action' => 'index'));
+			} else {
 				$this->Session->setFlash(__('The <?php echo strtolower($singularHumanName); ?> could not be saved. Please, try again.'));
+<?php else: ?>
+				return $this->flash(__('The <?php echo strtolower($singularHumanName); ?> has been saved.'), array('action' => 'index'));
 <?php endif; ?>
 			}
-		}
-		else
-		{
-			$this->request->data = $this-><?php echo $currentModelName; ?>->findById($id, null, null, -1);
+		} else {
+			$options = array('conditions' => array('<?php echo $currentModelName; ?>.' . $this-><?php echo $currentModelName; ?>->primaryKey => $id));
+			$this->request->data = $this-><?php echo $currentModelName; ?>->find('first', $options);
 		}
 <?php
 		foreach (array('belongsTo', 'hasAndBelongsToMany') as $assoc):
@@ -154,24 +134,21 @@
  */
 	public function <?php echo $admin; ?>delete($id = null) {
 		$this-><?php echo $currentModelName; ?>->id = $id;
-		if (!$this-><?php echo $currentModelName; ?>->exists())
-		{
+		if (!$this-><?php echo $currentModelName; ?>->exists()) {
 			throw new NotFoundException(__('Invalid <?php echo strtolower($singularHumanName); ?>'));
 		}
 		$this->request->onlyAllow('post', 'delete');
-		if ($this-><?php echo $currentModelName; ?>->delete())
-		{
+		if ($this-><?php echo $currentModelName; ?>->delete()) {
 <?php if ($wannaUseSession): ?>
-			$this->Session->setFlash(__('<?php echo ucfirst(strtolower($singularHumanName)); ?> deleted'));
-			$this->redirect($this->getReturnUrl());
-<?php else: ?>
-			$this->flash(__('<?php echo ucfirst(strtolower($singularHumanName)); ?> deleted'), array('action' => 'index'));
-<?php endif; ?>
+			$this->Session->setFlash(__('The <?php echo strtolower($singularHumanName); ?> has been deleted.'));
+		} else {
+			$this->Session->setFlash(__('The <?php echo strtolower($singularHumanName); ?> could not be deleted. Please, try again.'));
 		}
-<?php if ($wannaUseSession): ?>
-		$this->Session->setFlash(__('<?php echo ucfirst(strtolower($singularHumanName)); ?> was not deleted'));
+		return $this->redirect(array('action' => 'index'));
 <?php else: ?>
-		$this->flash(__('<?php echo ucfirst(strtolower($singularHumanName)); ?> was not deleted'), array('action' => 'index'));
+			return $this->flash(__('The <?php echo strtolower($singularHumanName); ?> has been deleted.'), array('action' => 'index'));
+		} else {
+			return $this->flash(__('The <?php echo strtolower($singularHumanName); ?> could not be deleted. Please, try again.'), array('action' => 'index'));
+		}
 <?php endif; ?>
-		$this->redirect($this->getReturnUrl());
 	}

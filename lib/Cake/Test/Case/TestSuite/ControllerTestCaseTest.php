@@ -39,7 +39,6 @@ if (!class_exists('AppController', false)) {
 	 * helpers property
 	 *
 	 * @var array
-	 * @access public
 	 */
 		public $helpers = array('Html');
 
@@ -47,7 +46,6 @@ if (!class_exists('AppController', false)) {
 	 * uses property
 	 *
 	 * @var array
-	 * @access public
 	 */
 		public $uses = array('ControllerPost');
 
@@ -55,7 +53,6 @@ if (!class_exists('AppController', false)) {
 	 * components property
 	 *
 	 * @var array
-	 * @access public
 	 */
 		public $components = array('Cookie');
 
@@ -211,6 +208,28 @@ class ControllerTestCaseTest extends CakeTestCase {
 			->method('write')
 			->will($this->returnValue('written!'));
 		$this->assertEquals('written!', $Posts->Auth->Session->write('something'));
+	}
+
+/**
+ * testGenerateWithComponentConfig
+ */
+	public function testGenerateWithComponentConfig() {
+		$Tests = $this->Case->generate('TestConfigs', array(
+		));
+
+		$expected = array('some' => 'config');
+		$settings = array_intersect_key($Tests->RequestHandler->settings, array('some' => 'foo'));
+		$this->assertSame($expected, $settings, 'A mocked component should have the same config as an unmocked component');
+
+		$Tests = $this->Case->generate('TestConfigs', array(
+			'components' => array(
+				'RequestHandler' => array('isPut')
+			)
+		));
+
+		$expected = array('some' => 'config');
+		$settings = array_intersect_key($Tests->RequestHandler->settings, array('some' => 'foo'));
+		$this->assertSame($expected, $settings, 'A mocked component should have the same config as an unmocked component');
 	}
 
 /**

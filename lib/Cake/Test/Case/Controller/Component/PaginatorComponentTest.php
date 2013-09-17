@@ -320,6 +320,8 @@ class PaginatorComponentTest extends CakeTestCase {
 		$Controller->request->query = array();
 		$Controller->constructClasses();
 
+		$Controller->PaginatorControllerPost->order = null;
+
 		$Controller->Paginator->settings = array(
 			'order' => array('PaginatorControllerComment.id' => 'ASC')
 		);
@@ -599,7 +601,26 @@ class PaginatorComponentTest extends CakeTestCase {
 		$result = $Controller->Paginator->paginate('PaginatorControllerPost');
 		$expected = array('2007-03-18 10:43:23', '2007-03-18 10:41:23', '2007-03-18 10:39:23');
 		$this->assertEquals($expected, Hash::extract($result, '{n}.PaginatorControllerPost.created'));
-		$this->assertEquals($Controller->PaginatorControllerPost->order, $this->Controller->request['paging']['PaginatorControllerPost']['order']);
+		$this->assertEquals(
+			$Controller->PaginatorControllerPost->order,
+			$Controller->request->paging['PaginatorControllerPost']['options']['order']
+		);
+
+		$Controller->PaginatorControllerPost->order = array('PaginatorControllerPost.id');
+		$result = $Controller->Paginator->validateSort($Controller->PaginatorControllerPost, array());
+		$this->assertEmpty($result['order']);
+
+		$Controller->PaginatorControllerPost->order = 'PaginatorControllerPost.id';
+		$results = $Controller->Paginator->validateSort($Controller->PaginatorControllerPost, array());
+		$this->assertEmpty($result['order']);
+
+		$Controller->PaginatorControllerPost->order = array(
+			'PaginatorControllerPost.id',
+			'PaginatorControllerPost.created' => 'asc'
+		);
+		$result = $Controller->Paginator->validateSort($Controller->PaginatorControllerPost, array());
+		$expected = array('PaginatorControllerPost.created' => 'asc');
+		$this->assertEquals($expected, $result['order']);
 	}
 
 /**
@@ -931,6 +952,23 @@ class PaginatorComponentTest extends CakeTestCase {
 		$result = $this->Paginator->validateSort($model, $options, array('title', 'id'));
 
 		$this->assertNull($result['order']);
+	}
+
+/**
+ * test that fields in the whitelist are not validated
+ *
+ * @return void
+ */
+	public function testValidateSortWhitelistTrusted() {
+		$model = $this->getMock('Model');
+		$model->alias = 'model';
+		$model->expects($this->never())->method('hasField');
+
+		$options = array('sort' => 'body', 'direction' => 'asc');
+		$result = $this->Paginator->validateSort($model, $options, array('body'));
+
+		$expected = array('body' => 'asc');
+		$this->assertEquals($expected, $result['order']);
 	}
 
 /**

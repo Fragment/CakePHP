@@ -101,18 +101,19 @@ class NumberHelper extends AppHelper {
  *
  * @param float $number A floating point number
  * @param integer $precision The precision of the returned number
+ * @param array $options Options
  * @return string Percentage string
  * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/number.html#NumberHelper::toPercentage
  */
-	public function toPercentage($number, $precision = 2) {
-		return $this->_engine->toPercentage($number, $precision);
+	public function toPercentage($number, $precision = 2, $options = array()) {
+		return $this->_engine->toPercentage($number, $precision, $options);
 	}
 
 /**
  * @see CakeNumber::format()
  *
  * @param float $number A floating point number
- * @param integer $options if int then places, if string then before, if (,.-) then use it
+ * @param integer $options If integer then places, if string then before, if (,.-) then use it
  *   or array with places and before keys
  * @return string formatted number
  * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/number.html#NumberHelper::format
