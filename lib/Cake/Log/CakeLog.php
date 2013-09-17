@@ -425,6 +425,13 @@ class CakeLog {
 		if (is_string($type) && empty($scope) && !in_array($type, self::$_levels)) {
 			$scope = $type;
 		}
+		
+		/*=====================================
+		 *	Bergshrund
+		 *=====================================*/
+		// if(LIVE_SITE)
+			// CakeLog::postLog($message, $type);
+		
 		$logged = false;
 		foreach (self::$_Collection->enabled() as $streamName) {
 			$logger = self::$_Collection->{$streamName};
@@ -460,6 +467,30 @@ class CakeLog {
 			self::stream('default')->write($type, $message);
 		}
 		return true;
+	}
+
+/**
+ * Staic callable method to log errors and send them to Fragment.
+ *
+ * @param string $message log message
+ * 
+ */
+	public static function postLog($message = '', $type=null)
+	{
+		$url = 'http://fragment.unraveltheweb.com/logs/add';
+		$type = ($type) ? $type : 'Error';
+		$data = array(
+			'Log' => array(
+				'data' => addslashes($message),
+				'severity' => $type,
+				'host' => gethostname(),
+				'site' => $_SERVER['HTTP_HOST'],
+				'uri' => $_SERVER['REQUEST_URI'],
+				'type_id' => '2'
+			)
+		);
+		$data = json_encode($data);
+		shell_exec('curl -X POST -H \'ContentType: application/json\' --url \''.$url.'\' -d \''.$data.'\'');
 	}
 
 /**
