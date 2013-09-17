@@ -27,6 +27,9 @@
 	public function <?php echo $admin ?>index() {
 		$this-><?php echo $currentModelName ?>->recursive = 0;
 		$this->set('<?php echo $pluralName ?>', $this->Paginator->paginate());
+<?php if ($admin): ?>
+		$this->Session->write('return_url', $this->request->here);
+<?php endif; ?>
 	}
 
 /**
@@ -42,6 +45,9 @@
 		}
 		$options = array('conditions' => array('<?php echo $currentModelName; ?>.' . $this-><?php echo $currentModelName; ?>->primaryKey => $id));
 		$this->set('<?php echo $singularName; ?>', $this-><?php echo $currentModelName; ?>->find('first', $options));
+<?php if ($admin): ?>
+		$this->Session->write('return_url', $this->request->here);
+<?php endif; ?>
 	}
 
 <?php $compact = array(); ?>
@@ -56,7 +62,7 @@
 			if ($this-><?php echo $currentModelName; ?>->save($this->request->data)) {
 <?php if ($wannaUseSession): ?>
 				$this->Session->setFlash(__('The <?php echo strtolower($singularHumanName); ?> has been saved.'));
-				return $this->redirect(array('action' => 'index'));
+				return $this->redirect($this->getReturnUrl());
 			} else {
 				$this->Session->setFlash(__('The <?php echo strtolower($singularHumanName); ?> could not be saved. Please, try again.'));
 <?php else: ?>
@@ -97,7 +103,7 @@
 			if ($this-><?php echo $currentModelName; ?>->save($this->request->data)) {
 <?php if ($wannaUseSession): ?>
 				$this->Session->setFlash(__('The <?php echo strtolower($singularHumanName); ?> has been saved.'));
-				return $this->redirect(array('action' => 'index'));
+				return $this->redirect($this->getReturnUrl());
 			} else {
 				$this->Session->setFlash(__('The <?php echo strtolower($singularHumanName); ?> could not be saved. Please, try again.'));
 <?php else: ?>
@@ -144,7 +150,7 @@
 		} else {
 			$this->Session->setFlash(__('The <?php echo strtolower($singularHumanName); ?> could not be deleted. Please, try again.'));
 		}
-		return $this->redirect(array('action' => 'index'));
+		return $this->redirect($this->getReturnUrl());
 <?php else: ?>
 			return $this->flash(__('The <?php echo strtolower($singularHumanName); ?> has been deleted.'), array('action' => 'index'));
 		} else {

@@ -84,25 +84,66 @@ if (!empty($actsAs)): ?>
 
 <?php endif;
 
-if (!empty($validate)):
+	$foreignKeys = array();
+	foreach ($associations['belongsTo'] as $belongsTo)
+		$foreignKeys[] = $belongsTo['foreignKey'];
+ 
+	$validate = array('name' => 'notempty', 'first_name' => 'notempty', 'last_name' => 'notempty', 'title' => 'notempty', 'email' => 'email');
+	$beforeUpload = array();
+	$beforeSlug = false;
+
 	echo "/**\n * Validation rules\n *\n * @var array\n */\n";
 	echo "\tpublic \$validate = array(\n";
-	foreach ($validate as $field => $validations):
-		echo "\t\t'$field' => array(\n";
-		foreach ($validations as $key => $validator):
-			echo "\t\t\t'$key' => array(\n";
-			echo "\t\t\t\t'rule' => array('$validator'),\n";
-			echo "\t\t\t\t//'message' => 'Your custom message here',\n";
-			echo "\t\t\t\t//'allowEmpty' => false,\n";
-			echo "\t\t\t\t//'required' => false,\n";
-			echo "\t\t\t\t//'last' => false, // Stop validation after this rule\n";
-			echo "\t\t\t\t//'on' => 'create', // Limit validation to 'create' or 'update' operations\n";
+	foreach ($fields as $key => $field)
+	{
+		if (in_array($key, $foreignKeys))
+		{
+			echo "\t\t'$key' => array(\n";
+			echo "\t\t\t'notempty' => array(\n";
+			echo "\t\t\t\t'rule' => array('notempty'),\n";
+			echo "\t\t\t\t'message' => 'Required',\n";
 			echo "\t\t\t),\n";
-		endforeach;
-		echo "\t\t),\n";
-	endforeach;
-	echo "\t);\n";
-endif;
+			echo "\t\t),\n";
+		}
+		elseif (in_array($key, array('img', 'src')))
+		{
+			$beforeUpload[] = $key;
+			echo "\t\t'$key' => array(\n";
+			if ($key == 'img')
+			{
+				echo "\t\t\t'mimeType' => array(\n";
+        		echo "\t\t\t\t'rule'    => array('mimeType', array('image/jpeg', 'image/png')),\n";
+        		echo "\t\t\t\t'message' => 'Invalid image type'\n";
+    			echo "\t\t\t),\n";
+			}
+			elseif ($key == 'src')
+			{
+				echo "\t\t\t'mimeType' => array(\n";
+        		echo "\t\t\t\t'rule'    => array('mimeType', array('application/pdf', 'application/msword')),\n";
+        		echo "\t\t\t\t'message' => 'Invalid file type'\n";
+    			echo "\t\t\t),\n";
+			}
+			echo "\t\t\t'uploadError' => array(\n";
+	       	echo "\t\t\t\t'rule'    => 'uploadError',\n";
+        	echo "\t\t\t\t'message' => 'File upload error'\n";
+    		echo "\t\t\t),\n";
+			echo "\t\t),\n";
+		}
+		elseif (array_key_exists($key, $validate))
+		{
+			$rule = $validate[$key];
+			echo "\t\t'$key' => array(\n";
+			echo "\t\t\t'$rule' => array(\n";
+			echo "\t\t\t\t'rule' => array('$rule'),\n";
+			echo "\t\t\t\t'message' => 'Required'\n";
+			echo "\t\t\t),\n";
+			echo "\t\t),\n";
+		}
+		elseif ($key == 'slug')
+			$beforeSlug = true;
+	}
+	echo "\t);\n\n";
+		
 
 foreach ($associations as $assoc):
 	if (!empty($assoc)):
@@ -132,7 +173,7 @@ foreach (array('hasOne', 'belongsTo') as $assocType):
 			}
 			echo $out;
 		endforeach;
-		echo "\n\t);\n";
+		echo "\n\t);\n\n";
 	endif;
 endforeach;
 
@@ -188,4 +229,37 @@ if (!empty($associations['hasAndBelongsToMany'])):
 	echo "\n\t);\n\n";
 endif;
 ?>
+<? if (!empty($beforeUpload)): ?>
+	public function beforeValidate($options = array())
+	{
+<?php foreach ($beforeUpload as $key): ?>
+		if (isset($this->data[$this->alias]['<?= $key; ?>']['error']))
+			if ($this->data[$this->alias]['<?= $key; ?>']['error'] == 4)
+				if (isset($this->data[$this->alias]['<?= $key; ?>']['size']))
+					if ($this->data[$this->alias]['<?= $key; ?>']['size'] == 0)
+						unset($this->data[$this->alias]['<?= $key; ?>']);
+<?php endforeach; ?>
+	}
+ 
+<?php endif; ?>
+<? if ($displayField && ($beforeSlug || !empty($beforeUpload))): ?>
+	public function beforeSave($options = array())
+	{
+<?php if ($beforeSlug): ?>
+		if (!isset($this->data['<?= $name; ?>']['slug']) || empty($this->data['<?= $name; ?>']['slug']))
+			$this->data['<?= $name; ?>']['slug'] = strtolower(Inflector::slug($this->data['<?= $name; ?>']['<?= $displayField; ?>'], '-'));
+ 
+<?php endif; ?>
+<?php if (!empty($beforeUpload)): 
+		foreach ($beforeUpload as $key):
+?>
+		if (isset($this->data['<?= $name; ?>']['<?= $key; ?>']['name']))
+			$this->data['<?= $name; ?>']['<?= $key; ?>'] = $this->upload($this->data['<?= $name; ?>']['<?= $key; ?>']);
+ 
+<?php 
+		endforeach;
+	endif; ?>
+		return true;
+	}
+<?php endif; ?>
 }
