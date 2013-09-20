@@ -3,29 +3,24 @@
 	*	Site Meta Info
 	*==============================================*/
 	$meta = array(
-		'site_name' => 'CakePHP',
-		'controllers' => App::objects('Controller')
+		'site_name' => 'Fragment',
+		'controllers' => array()
 	);
-	
-	foreach($meta['controllers'] as $i => $c)
-		$meta['controllers'][$i] = str_replace('Controller', '', $c);
 
-	array_shift($meta['controllers']);
-	
 	/**==============================================
 	*	Links to exclude from navigation.
 	*==============================================*/
 	$meta['disable'] = array(
-		'ex. Applications'
+		'Groups','Sites','App','Comments','Types','Severities'
 	);
-	
-	foreach($meta['disable'] as $q) {
-		$i = array_search($q, $meta['controllers']);
-		if($i > 0) 
-			array_splice($meta['controllers'], $i, 1);
-		else if($i === 0)
-			array_shift($meta['controllers']);
+
+	foreach(App::objects('Controller') as $c)
+	{
+		$table = str_replace('Controller', '', $c);
+		if(!in_array($table, $meta['disable']))
+			$meta['controllers'][] = $table;
 	}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -38,55 +33,51 @@
 			echo $this->Html->meta('icon');
 			echo $this->Html->css('admin.bootstrap.min');
 			echo $this->Html->css('admin');
-			echo $this->Html->css('/js/cakejax');
-?>
-			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<?
+			echo $this->Html->css('cakejax');
+			echo $this->Html->css('fontello-embedded');
+			echo $this->Html->script('jquery.1.10.1.min');
+			echo $this->Html->script('bootstrap.min');
 			echo $this->Html->script('cakejax');
 			echo $this->Html->script('app');
-			echo $this->Html->script('admin');
-
-			echo $this->fetch('meta');
-			echo $this->fetch('css');
-			echo $this->fetch('script');
+			// echo $this->Html->script('HistoryController');
+			// echo $this->Html->script('admin');
 			echo $this->Html->script('ckeditor/ckeditor');
 ?>
 </head>
 <body>
 	<div id="container">
-		<div id="header" class="clrafter">
-			<div id="logo"><a href="/"><?=$meta['site_name'];?></a></div>
-		</div>
-		<div id="content">
-			<?php echo $this->Session->flash(); ?>
-				<nav class="navbar">
-					<div class="navbar-inner shiny">
-					<ul class="nav">
+		<div class="header clrafter">
+			<div class="container">
+				<nav class="navbar navbar-default" role="navigation">
+					<a href="/" class="navbar-brand" alt="<?=$meta['site_name'];?>">FRAGMENT</a>
+					<ul class="nav navbar-nav">
 <?
 						foreach($meta['controllers'] as $index => $cont):
 ?>
-						<li>
+						<li class="<?=$this->params->controller == strtolower($cont) ? 'active' : '';?>">
 							<a href="/admin/<?= Inflector::tableize($cont); ?>" title="<?=$cont;?>"><?=$cont;?></a>
-							<!-- <ul class="<?=($this->params['controller'] == $cont) ? 'current' : '';?>">
-								<li>
-									<a href="/admin/<?=strtolower($cont);?>/add" title="New <?=$cont;?>">
-										+ New <?=$cont;?></a>
-								</li>
-							</ul> -->
 						</li>
 <?
 						endforeach;
 ?>
-						<li class="divider-vertical"></li>
-						<li><a href="/logout" title="Logout">Logout</a></li>
+						</ul>
+						<ul class="nav navbar-nav navbar-right">
+							<li><a href="/logout" title="Logout">Logout</a></li>
+						</ul>
 					</ul>
 				</nav>
-			<div id="view" class="shiny clrafter flex">
+			</div>
+		</div>
+		<div class="container">
+			<?php echo $this->Session->flash(); ?>
+			<div id="view" class="clrafter">
 				<?php echo $this->fetch('content'); ?>
 			</div>
 		</div>
-		<div id="footer" class="clr">
-			
+		<div class="footer">
+			<div class="container">
+				
+			</div>
 		</div>
 	</div>
 	<?php echo $this->element('sql_dump'); ?>
