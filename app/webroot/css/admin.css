@@ -36,38 +36,12 @@ img {vertical-align:bottom;max-width:100%;height:auto;}
 .form .static { line-height: 2.1em; font-weight: bold; }
 .form p.note { margin-left:130px; color: #333; font-size: 12px; margin-top:5px;}
 
-.preview-input { margin-bottom: 20px; }
-.preview-input .input, .preview-input input { float:left; }
-.image-preview { position: relative; }
-	.image-preview a { display: block; position: absolute; right:2px; top:2px; }
-	
-/*=====================================
- *	Sprites
- *=====================================*/
-.spr {position:relative;}
-.spr:after, .spr:before {background-image:url('/img/les_sprite.png');background-repeat:no-repeat;position:absolute;content:'';}
-
-.cart-remove {font-size:0;vertical-align:middle;}
-.cart-remove:after {background-position:-56px -119px;width:17px;height:17px;right:-12px;margin-top:-9px;top:50%;}
-
-/**==============================================
-*	palette
-*
-*	teal	rgb(62,192,197)		
-*	dark	rgb(12,64,66)		--text
-*	body	rgb(236,236,236)	--bg
-*	header	rgb(255,255,255)	--bg
-*
-*/
-
-
 body {
 	-webkit-font-smoothing:antialiased;
 	-moz-font-smoothing:antialiased;
 	font-smoothing:antialiased;
 	text-rendering:optimizeLegibility;
 	font-smooth:always;
-	background-image: url('/img/admin-texture.png');
 	color: rgb(26,35,44);
 	font:normal 0.875em/1.2em 'Open Sans',verdana,'Lucida Grande',sans-serif; 
  	margin: 0;}
@@ -104,13 +78,7 @@ p { margin: 0 0 1em 0; }
 	position: relative; 
 	border: 1px solid #808080; 
 	box-shadow: 0 0 5px rgba(0,0,0,0.4);
-	background: -moz-linear-gradient(top,  rgba(255,255,255,0.19) 0%, rgba(255,255,255,0) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0.19)), color-stop(100%,rgba(255,255,255,0))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  rgba(255,255,255,0.19) 0%,rgba(255,255,255,0) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  rgba(255,255,255,0.19) 0%,rgba(255,255,255,0) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  rgba(255,255,255,0.19) 0%,rgba(255,255,255,0) 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  rgba(255,255,255,0.19) 0%,rgba(255,255,255,0) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#30ffffff', endColorstr='#00ffffff',GradientType=0 ); /* IE6-9 */
+	background:black;
 	border-bottom:2px solid rgb(160,160,160);
 }
 
@@ -200,8 +168,11 @@ td.actions { text-align: right; }
 .paging .current,
 .paging .disabled,
 .paging a { text-decoration: none; display: inline-block }
-.paging .disabled { color: #ddd; }
-.paging .current { color: #c73e14; }
+.paging .disabled { color: #ddd; padding:7px 10px; }
+.paging span.current { color: white; background:rgba(100,100,100,1); padding:7px 10px;}
+.paging span {padding:0;}
+.paging span a {padding:7px 10px;}
+
 
 /** Scaffold View **/
 dl { line-height: 2em; margin: 0em 0em; width: 60%; }
