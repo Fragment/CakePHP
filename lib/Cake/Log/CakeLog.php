@@ -470,7 +470,7 @@ class CakeLog {
 	}
 
 /**
- * Static callable method to log errors and send them to Fragment.
+ * Staic callable method to log errors and send them to Fragment.
  *
  * @param string $message log message
  * 
@@ -491,7 +491,7 @@ class CakeLog {
 		);
 		$data = json_encode($data);
 		if($data)
-			shell_exec('curl -X POST -H \'Content-Type: application/json\' --url \''.$url.'\' -d '.escapeshellarg($data));
+			shell_exec('curl -X POST -H '.escapeshellarg('Content-Type: application/json').' -H '.escapeshellarg('Accept: application/json').' --url '.escapeshellarg($url).' -d '.escapeshellarg($data));
 	}
 
 /**
