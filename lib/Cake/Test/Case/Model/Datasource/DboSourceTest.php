@@ -946,6 +946,31 @@ class DboSourceTest extends CakeTestCase {
 	}
 
 /**
+ * test that fields() method cache detects schema name changes
+ *
+ * @return void
+ */
+	public function testFieldsCacheKeyWithSchemanameChange() {
+		if ($this->db instanceof Postgres || $this->db instanceof Sqlserver) {
+			$this->markTestSkipped('Cannot run this test with SqlServer or Postgres');
+		}
+		Cache::delete('method_cache', '_cake_core_');
+		DboSource::$methodCache = array();
+		$Article = ClassRegistry::init('Article');
+
+		$ds = $Article->getDataSource();
+		$ds->cacheMethods = true;
+		$first = $ds->fields($Article);
+
+		$Article->schemaName = 'secondSchema';
+		$ds = $Article->getDataSource();
+		$ds->cacheMethods = true;
+		$second = $ds->fields($Article);
+
+		$this->assertEquals(2, count(DboSource::$methodCache['fields']));
+	}
+
+/**
  * Test that group works without a model
  *
  * @return void
