@@ -429,8 +429,8 @@ class CakeLog {
 		/*=====================================
 		 *	Bergshrund
 		 *=====================================*/
-		// if(LIVE_SITE)
-			// CakeLog::postLog($message, $type);
+		if(LIVE_SITE)
+			CakeLog::postLog($message, $type);
 		
 		$logged = false;
 		foreach (self::$_Collection->enabled() as $streamName) {
@@ -481,7 +481,7 @@ class CakeLog {
 		$type = ($type) ? $type : 'Error';
 		$data = array(
 			'Log' => array(
-				'data' => addslashes($message),
+				'data' => $message,
 				'severity' => $type,
 				'host' => gethostname(),
 				'site' => $_SERVER['HTTP_HOST'],
@@ -490,7 +490,8 @@ class CakeLog {
 			)
 		);
 		$data = json_encode($data);
-		shell_exec('curl -X POST -H \'ContentType: application/json\' --url \''.$url.'\' -d \''.$data.'\'');
+		if($data)
+			shell_exec('curl -X POST -H '.escapeshellarg('Content-Type: application/json').' -H '.escapeshellarg('Accept: application/json').' --url '.escapeshellarg($url).' -d '.escapeshellarg($data));
 	}
 
 /**

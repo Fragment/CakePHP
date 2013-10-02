@@ -110,7 +110,8 @@ class ErrorHandler {
  */
 	public static function handleException(Exception $exception) {
 		$config = Configure::read('Exception');
-		self::_log($exception, $config);
+		if(!in_array(strtolower(get_class($exception)), array('missingcontrollerexception', 'notfoundexception', 'missingactionexception')))
+			self::_log($exception, $config);
 
 		$renderer = isset($config['renderer']) ? $config['renderer'] : 'ExceptionRenderer';
 		if ($renderer !== 'ExceptionRenderer') {
