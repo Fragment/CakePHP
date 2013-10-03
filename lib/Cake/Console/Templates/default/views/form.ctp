@@ -43,6 +43,8 @@
 				echo "\t\techo \$this->Form->input('{$field}', array('empty' => true));\n";
 			} elseif (in_array($field, array('img', 'src'))) {
 				echo "\t\techo \$this->Form->input('{$field}', array('type' => 'file'));\n";
+			} elseif (in_array($field, array('body', 'description'))) {
+				echo "\t\techo \$this->Form->input('{$field}', array('required' => false));\n";
 			} elseif (!in_array($field, array('created', 'login', 'modified', 'position', 'updated'))) {
 				echo "\t\techo \$this->Form->input('{$field}');\n";
 			}

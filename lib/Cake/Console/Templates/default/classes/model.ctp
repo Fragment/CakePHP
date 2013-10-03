@@ -109,20 +109,10 @@ if (!empty($actsAs)): ?>
 		{
 			$beforeUpload[] = $key;
 			echo "\t\t'$key' => array(\n";
-			if ($key == 'img')
-			{
-				echo "\t\t\t'mimeType' => array(\n";
-        		echo "\t\t\t\t'rule'    => array('mimeType', array('image/jpeg', 'image/png')),\n";
-        		echo "\t\t\t\t'message' => 'Invalid image type'\n";
-    			echo "\t\t\t),\n";
-			}
-			elseif ($key == 'src')
-			{
-				echo "\t\t\t'mimeType' => array(\n";
-        		echo "\t\t\t\t'rule'    => array('mimeType', array('application/pdf', 'application/msword')),\n";
-        		echo "\t\t\t\t'message' => 'Invalid file type'\n";
-    			echo "\t\t\t),\n";
-			}
+			echo "\t\t\t'mimeType' => array(\n";
+        	echo "\t\t\t\t'rule'    => 'checkMime',\n";
+        	echo "\t\t\t\t'message' => 'Invalid file type'\n";
+    		echo "\t\t\t),\n";
 			echo "\t\t\t'uploadError' => array(\n";
 	       	echo "\t\t\t\t'rule'    => 'uploadError',\n";
         	echo "\t\t\t\t'message' => 'File upload error'\n";
@@ -242,10 +232,10 @@ endif;
 	}
  
 <?php endif; ?>
-<? if ($displayField && ($beforeSlug || !empty($beforeUpload))): ?>
+<? if ($beforeSlug || !empty($beforeUpload)): ?>
 	public function beforeSave($options = array())
 	{
-<?php if ($beforeSlug): ?>
+<?php if ($displayField && $beforeSlug): ?>
 		if (!isset($this->data['<?= $name; ?>']['slug']) || empty($this->data['<?= $name; ?>']['slug']))
 			$this->data['<?= $name; ?>']['slug'] = strtolower(Inflector::slug($this->data['<?= $name; ?>']['<?= $displayField; ?>'], '-'));
  

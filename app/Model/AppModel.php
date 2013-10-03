@@ -35,19 +35,19 @@ class AppModel extends Model
 {
 	public function upload($source, $filename = null, $size = null, $field = null, $folder = null)
 	{
-		$is_image = getimagesize($source['tmp_name']);
-
 		if ($source && !empty($source))
 		{
+			$processed = false;
 			$pathinfo = pathinfo($source['name']);
-			if (!$filename)
-				$filename = $pathinfo['filename'];
-			$filename = strtolower(Inflector::slug($filename, '-'));
-
+			if ($filename)
+				$filename = strtolower(Inflector::slug($filename, '-')).'.'.strtolower($pathinfo['extension']);
+			else
+				$filename = strtolower(Inflector::slug($pathinfo['filename'], '-')).'-'.date('mdy').'-'.rand(100, 999).'.'.strtolower($pathinfo['extension']);
 			$folder = ($folder) ? $folder : $this->table;
 			$path = getcwd().'/files/'.$folder;
 			$path .= ($field) ? '/'.$field : '';
 
+			$is_image = getimagesize($source['tmp_name']);
 			if ($is_image)
 			{
 				if (!$size)
@@ -107,47 +107,38 @@ class AppModel extends Model
 					$curr_path = $path;
 					$curr_path .= ($size_folder) ? '/'.$size_folder : '';
 
-					if(!is_dir($curr_path))
+					if (!is_dir($curr_path))
 					{
 						$old = umask(0);
 						mkdir($curr_path, 0777);
 						umask($old);
 					}
 					
-					$new_filename = $filename.'-'.date('yhis').'.'.strtolower($pathinfo['extension']);
-					// $x = 0;
-					// $new_filename = null;
-					// do
-					// {
-					// 	$new_filename = $filename;
-					// 	if ($x > 0)
-					// 		$new_filename .= '-'.$x;
-					// 	$new_filename .= '.'.strtolower($pathinfo['extension']);
-					// 		
-					// 	if (file_exists($curr_path.'/'.$new_filename))
-					// 		$new_filename = null;
-					// 	$x++;
-					// }
-					// while ($new_filename == null);
-					$curr_filename = $new_filename;
-
-					$curr_path .= '/'.$curr_filename;
+					
+					$curr_path .= '/'.$filename;
 					if ($upload_type == 3)
-						imagepng($dest_img, $curr_path, 0);
+					{
+						if (imagepng($dest_img, $curr_path, 0))
+							$processed = true;
+					}
 					else
-						imagejpeg($dest_img, $curr_path, 75);
+					{
+						if (imagejpeg($dest_img, $curr_path, 75))
+							$processed = true;
+					}
 
 					imagedestroy($dest_img);
 				}
-
-				return $curr_filename;
 			}
 			else
 			{
 				$path .= '/'.$filename;
-				move_uploaded_file($source['tmp_name'], $path);
-				return $filename;
+				if (move_uploaded_file($source['tmp_name'], $path))
+					$processed = true;
 			}
+
+			if ($processed)
+				return $filename;
 		}
 	}
 
@@ -159,7 +150,7 @@ class AppModel extends Model
 			'image/png',
 			'image/tiff',
 			'image/jpg',
-			'image/pjpeg'
+			'image/pjpeg',
 			// 'application/acad',
 			// 'application/dxf',
 			// 'application/msword',
