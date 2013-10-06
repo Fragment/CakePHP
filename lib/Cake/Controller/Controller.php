@@ -937,6 +937,7 @@ class Controller extends Object implements CakeEventListener {
 
 		$this->View = $this->_getViewObject();
 
+		$validationErrors = array();
 		$models = ClassRegistry::keys();
 		foreach ($models as $currentModel) {
 			$currentObject = ClassRegistry::getObject($currentModel);
@@ -945,8 +946,11 @@ class Controller extends Object implements CakeEventListener {
 				list($plugin) = pluginSplit(App::location($className));
 				$this->request->params['models'][$currentObject->alias] = compact('plugin', 'className');
 				$this->View->validationErrors[$currentObject->alias] =& $currentObject->validationErrors;
+				if(!empty($currentObject->validationErrors))
+					$validationErrors[$currentObject->alias] = $currentObject->validationErrors;
 			}
 		}
+		$this->View->set('_validationErrors', $validationErrors);
 
 		$this->autoRender = false;
 		$this->response->body($this->View->render($view, $layout));
