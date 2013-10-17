@@ -99,7 +99,6 @@ class AuthTestController extends Controller {
 /**
  * construct method
  *
- * @return void
  */
 	public function __construct($request, $response) {
 		$request->addParams(Router::parse('/auth_test'));
@@ -1205,7 +1204,7 @@ class AuthComponentTest extends CakeTestCase {
 	}
 
 /**
- * test that logout deletes the session variables. and returns the correct url
+ * test that logout deletes the session variables. and returns the correct URL
  *
  * @return void
  */

@@ -7761,7 +7761,7 @@ class FormHelperTest extends CakeTestCase {
 	}
 
 /**
- * Test base form url when url param is passed with multiple parameters (&)
+ * Test base form URL when url param is passed with multiple parameters (&)
  *
  */
 	public function testCreateQuerystringrequest() {
@@ -8181,6 +8181,22 @@ class FormHelperTest extends CakeTestCase {
 			'label' => array('for' => 'ContactBooleanField'),
 			'Boolean Field',
 			'/label',
+			'/div'
+		);
+		$this->assertTags($result, $expected);
+
+		$result = $this->Form->input('Contact.iamrequiredalways', array('type' => 'file'));
+		$expected = array(
+			'div' => array('class' => 'input file required'),
+			'label' => array('for' => 'ContactIamrequiredalways'),
+			'Iamrequiredalways',
+			'/label',
+			'input' => array(
+				'type' => 'file',
+				'name' => 'data[Contact][iamrequiredalways]',
+				'id' => 'ContactIamrequiredalways',
+				'required' => 'required'
+			),
 			'/div'
 		);
 		$this->assertTags($result, $expected);
