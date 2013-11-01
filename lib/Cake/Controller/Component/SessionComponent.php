@@ -32,6 +32,11 @@ App::uses('CakeSession', 'Model/Datasource');
  */
 class SessionComponent extends Component {
 
+	public function initialize(Controller $Controller)
+	{
+		$this->Controller = $Controller;
+	}
+
 /**
  * Get / Set the userAgent
  *
@@ -126,6 +131,7 @@ class SessionComponent extends Component {
  */
 	public function setFlash($message, $element = 'default', $params = array(), $key = 'flash') {
 		CakeSession::write('Message.' . $key, compact('message', 'element', 'params'));
+		$this->Controller->set('_flash', $message);
 	}
 
 /**

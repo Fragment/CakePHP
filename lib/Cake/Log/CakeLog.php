@@ -475,23 +475,22 @@ class CakeLog {
  * @param string $message log message
  * 
  */
-	public static function postLog($message = '', $type=null)
+	public static function postLog($message = '', $type = null)
 	{
-		$url = 'http://fragment.unraveltheweb.com/logs/add';
+		$url = 'http://summit.fragmentlabs.com/logs';
 		$type = ($type) ? $type : 'Error';
-		$data = array(
-			'Log' => array(
-				'data' => $message,
-				'severity' => $type,
-				'host' => gethostname(),
-				'site' => $_SERVER['HTTP_HOST'],
-				'uri' => $_SERVER['REQUEST_URI'],
-				'type_id' => '2'
-			)
+		$log = array(
+			'data' => $message,
+			'severity' => $type,
+			'host' => gethostname(),
+			'site' => $_SERVER['HTTP_HOST'],
+			'uri' => $_SERVER['REQUEST_URI'],
+			'basecamp_id' => 0 // BASECAMP PROJECT ID
 		);
-		$data = json_encode($data);
-		if($data)
-			shell_exec('curl -X POST -H '.escapeshellarg('Content-Type: application/json').' -H '.escapeshellarg('Accept: application/json').' --url '.escapeshellarg($url).' -d '.escapeshellarg($data));
+		$log = json_encode($log);
+		if($log) {
+			shell_exec('curl -X POST -H '.escapeshellarg('Content-Type: application/json').' -H '.escapeshellarg('Accept: application/json').' -H '.escapeshellarg('Content-Length: '.strlen($log).).' --url '.escapeshellarg($url).' -d '.escapeshellarg($log));
+		}
 	}
 
 /**
