@@ -489,7 +489,7 @@ class CakeLog {
 		);
 		$log = json_encode($log);
 		if($log) {
-			shell_exec('curl -X POST -H '.escapeshellarg('Content-Type: application/json').' -H '.escapeshellarg('Accept: application/json').' -H '.escapeshellarg('Content-Length: '.strlen($log).).' --url '.escapeshellarg($url).' -d '.escapeshellarg($log));
+			shell_exec('curl -X POST -H '.escapeshellarg('Content-Type: application/json').' -H '.escapeshellarg('Accept: application/json').' -H '.escapeshellarg('Content-Length: '.strlen($log)).' --url '.escapeshellarg($url).' -d '.escapeshellarg($log));
 		}
 	}
 
