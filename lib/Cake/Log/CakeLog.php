@@ -483,9 +483,8 @@ class CakeLog {
 			'data' => $message,
 			'severity' => $type,
 			'host' => gethostname(),
-			'site' => $_SERVER['HTTP_HOST'],
-			'uri' => $_SERVER['REQUEST_URI'],
-			'basecamp_id' => 0 // BASECAMP PROJECT ID
+			'uri' => (!empty($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : 'Not Available'),
+			'site_id' => '' // SUMMIT SITE ID
 		);
 		$log = json_encode($log);
 		if($log) {
