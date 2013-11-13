@@ -483,13 +483,12 @@ class CakeLog {
 			'data' => $message,
 			'severity' => $type,
 			'host' => gethostname(),
-			'site' => $_SERVER['HTTP_HOST'],
-			'uri' => $_SERVER['REQUEST_URI'],
-			'basecamp_id' => 0 // BASECAMP PROJECT ID
+			'uri' => (!empty($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : 'Not Available'),
+			'site_id' => '' // SUMMIT SITE ID
 		);
 		$log = json_encode($log);
 		if($log) {
-			shell_exec('curl -X POST -H '.escapeshellarg('Content-Type: application/json').' -H '.escapeshellarg('Accept: application/json').' -H '.escapeshellarg('Content-Length: '.strlen($log)).' --url '.escapeshellarg($url).' -d '.escapeshellarg($log));
+			shell_exec('curl -X POST -m 2.5 -H '.escapeshellarg('Content-Type: application/json').' -H '.escapeshellarg('Accept: application/json').' -H '.escapeshellarg('Content-Length: '.strlen($log)).' --url '.escapeshellarg($url).' -d '.escapeshellarg($log));
 		}
 	}
 
