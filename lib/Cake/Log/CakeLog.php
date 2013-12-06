@@ -478,10 +478,9 @@ class CakeLog {
 	public static function postLog($message = '', $type = null)
 	{
 		$url = 'http://summit.fragmentlabs.com/logs';
-		$type = ($type) ? $type : 'Error';
 		$log = array(
 			'data' => $message,
-			'severity' => $type,
+			'type' => $type,
 			'host' => gethostname(),
 			'uri' => (!empty($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : 'Not Available'),
 			'site_id' => '' // SUMMIT SITE ID
