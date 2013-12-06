@@ -218,7 +218,9 @@
  *
  */
 	Configure::write('Session', array(
-		'defaults' => 'php'
+		'defaults' => 'php',
+		'timeout' => 1440,
+		'autoRegenerate' => true
 	));
 
 /**
