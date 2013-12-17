@@ -22,8 +22,9 @@
 	<tr>
 <?
 		foreach ($fields as $field): 
-			if (!in_array($field, array('created', 'body', 'description', 'position', 'slug')))
+			if (!in_array($field, array('created', 'body', 'description', 'position', 'slug'))) {
 				echo "\t\t<th><?php echo \$this->Paginator->sort('{$field}'); ?></th>\n";
+			}
 		endforeach;
 ?>
 		<th class="actions"><?php echo "<?php echo __('Actions'); ?>"; ?></th>
@@ -43,10 +44,11 @@
 				}
 			}
 			if ($isKey !== true) {
-				if (in_array($field, array('active', 'featured')))
+				if (in_array($field, array('active', 'featured'))) {
 					echo "\t\t<td><?php echo (\${$singularVar}['{$modelClass}']['{$field}']) ? 'Yes' : 'No'; ?>&nbsp;</td>\n";
-				elseif (!in_array($field, array('created', 'body', 'description', 'position', 'slug')))
+				} elseif (!in_array($field, array('created', 'body', 'description', 'position', 'slug'))) {
 					echo "\t\t<td><?php echo h(\${$singularVar}['{$modelClass}']['{$field}']); ?>&nbsp;</td>\n";
+				}
 			}
 		}
 

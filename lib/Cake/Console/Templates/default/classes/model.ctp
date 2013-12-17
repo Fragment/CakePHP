@@ -83,28 +83,24 @@ if (!empty($actsAs)): ?>
 <?php endif;
 
 	$foreignKeys = array();
-	foreach ($associations['belongsTo'] as $belongsTo)
+	foreach ($associations['belongsTo'] as $belongsTo) {
 		$foreignKeys[] = $belongsTo['foreignKey'];
- 
+	}
 	$validate = array('name' => 'notempty', 'first_name' => 'notempty', 'last_name' => 'notempty', 'title' => 'notempty', 'email' => 'email');
 	$beforeUpload = array();
 	$beforeSlug = false;
 
 	echo "/**\n * Validation rules\n *\n * @var array\n */\n";
 	echo "\tpublic \$validate = array(\n";
-	foreach ($fields as $key => $field)
-	{
-		if (in_array($key, $foreignKeys))
-		{
+	foreach ($fields as $key => $field) {
+		if (in_array($key, $foreignKeys)) {
 			echo "\t\t'$key' => array(\n";
 			echo "\t\t\t'notempty' => array(\n";
 			echo "\t\t\t\t'rule' => array('notempty'),\n";
 			echo "\t\t\t\t'message' => 'Required',\n";
 			echo "\t\t\t),\n";
 			echo "\t\t),\n";
-		}
-		elseif (in_array($key, array('img', 'src')))
-		{
+		} elseif (in_array($key, array('img', 'src'))) {
 			$beforeUpload[] = $key;
 			echo "\t\t'$key' => array(\n";
 			echo "\t\t\t'mimeType' => array(\n";
@@ -116,9 +112,7 @@ if (!empty($actsAs)): ?>
         	echo "\t\t\t\t'message' => 'File upload error'\n";
     		echo "\t\t\t),\n";
 			echo "\t\t),\n";
-		}
-		elseif (array_key_exists($key, $validate))
-		{
+		} elseif (array_key_exists($key, $validate)) {
 			$rule = $validate[$key];
 			echo "\t\t'$key' => array(\n";
 			echo "\t\t\t'$rule' => array(\n";
@@ -126,12 +120,11 @@ if (!empty($actsAs)): ?>
 			echo "\t\t\t\t'message' => 'Required'\n";
 			echo "\t\t\t),\n";
 			echo "\t\t),\n";
-		}
-		elseif ($key == 'slug')
+		} elseif ($key == 'slug') {
 			$beforeSlug = true;
+		}
 	}
 	echo "\t);\n\n";
-		
 
 foreach ($associations as $assoc):
 	if (!empty($assoc)):
@@ -218,32 +211,34 @@ if (!empty($associations['hasAndBelongsToMany'])):
 endif;
 ?>
 <? if (!empty($beforeUpload)): ?>
-	public function beforeValidate($options = array())
-	{
+	public function beforeValidate($options = array()) {
 <?php foreach ($beforeUpload as $key): ?>
-		if (isset($this->data[$this->alias]['<?= $key; ?>']['error']))
-			if ($this->data[$this->alias]['<?= $key; ?>']['error'] == 4)
-				if (isset($this->data[$this->alias]['<?= $key; ?>']['size']))
-					if ($this->data[$this->alias]['<?= $key; ?>']['size'] == 0)
+		if (isset($this->data[$this->alias]['<?= $key; ?>']['error'])) {
+			if ($this->data[$this->alias]['<?= $key; ?>']['error'] == 4) {
+				if (isset($this->data[$this->alias]['<?= $key; ?>']['size'])) {
+					if ($this->data[$this->alias]['<?= $key; ?>']['size'] == 0) {
 						unset($this->data[$this->alias]['<?= $key; ?>']);
+					}
+				}
+			}
+		}
 <?php endforeach; ?>
 	}
  
 <?php endif; ?>
 <? if ($beforeSlug || !empty($beforeUpload)): ?>
-	public function beforeSave($options = array())
-	{
+	public function beforeSave($options = array()) {
 <?php if ($displayField && $beforeSlug): ?>
-		if (!isset($this->data['<?= $name; ?>']['slug']) || empty($this->data['<?= $name; ?>']['slug']))
+		if (!isset($this->data['<?= $name; ?>']['slug']) || empty($this->data['<?= $name; ?>']['slug'])) {
 			$this->data['<?= $name; ?>']['slug'] = strtolower(Inflector::slug($this->data['<?= $name; ?>']['<?= $displayField; ?>'], '-'));
- 
+		}
 <?php endif; ?>
 <?php if (!empty($beforeUpload)): 
 		foreach ($beforeUpload as $key):
 ?>
-		if (isset($this->data['<?= $name; ?>']['<?= $key; ?>']['name']))
+		if (isset($this->data['<?= $name; ?>']['<?= $key; ?>']['name'])) {
 			$this->data['<?= $name; ?>']['<?= $key; ?>'] = $this->upload($this->data['<?= $name; ?>']['<?= $key; ?>']);
- 
+		}
 <?php 
 		endforeach;
 	endif; ?>
