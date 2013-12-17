@@ -4,8 +4,6 @@
  *
  * Text manipulations: Highlight, excerpt, truncate, strip of links, convert email addresses to mailto: links...
  *
- * PHP 5
- *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -83,6 +81,7 @@ class TextHelper extends AppHelper {
 
 /**
  * Call methods from String utility class
+ * @return mixed Whatever is returned by called method, or false on failure
  */
 	public function __call($method, $params) {
 		return call_user_func_array(array($this->_engine, $method), $params);
@@ -188,7 +187,7 @@ class TextHelper extends AppHelper {
 
 		$atom = '[\p{L}0-9!#$%&\'*+\/=?^_`{|}~-]';
 		$text = preg_replace_callback(
-			'/(' . $atom . '+(?:\.' . $atom . '+)*@[\p{L}0-9-]+(?:\.[\p{L}0-9-]+)+)/ui',
+			'/(?<=\s|^|\()(' . $atom . '*(?:\.' . $atom . '+)*@[\p{L}0-9-]+(?:\.[\p{L}0-9-]+)+)/ui',
 			array(&$this, '_insertPlaceholder'),
 			$text
 		);

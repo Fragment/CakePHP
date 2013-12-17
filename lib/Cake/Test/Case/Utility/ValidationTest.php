@@ -2,12 +2,11 @@
 /**
  * ValidationTest file
  *
- * PHP 5
- *
  * CakePHP(tm) Tests <http://book.cakephp.org/2.0/en/development/testing.html>
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
- * Licensed under The Open Group Test Suite License
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -1416,14 +1415,16 @@ class ValidationTest extends CakeTestCase {
  * @return void
  */
 	public function testDateMyNumeric() {
-		$this->assertTrue(Validation::date('12/2006', array('my')));
+		$this->assertTrue(Validation::date('01/2006', array('my')));
 		$this->assertTrue(Validation::date('12-2006', array('my')));
 		$this->assertTrue(Validation::date('12.2006', array('my')));
 		$this->assertTrue(Validation::date('12 2006', array('my')));
-		$this->assertFalse(Validation::date('12/06', array('my')));
-		$this->assertFalse(Validation::date('12-06', array('my')));
-		$this->assertFalse(Validation::date('12.06', array('my')));
-		$this->assertFalse(Validation::date('12 06', array('my')));
+		$this->assertTrue(Validation::date('01/06', array('my')));
+		$this->assertTrue(Validation::date('12-06', array('my')));
+		$this->assertTrue(Validation::date('12.06', array('my')));
+		$this->assertTrue(Validation::date('12 06', array('my')));
+		$this->assertFalse(Validation::date('13 06', array('my')));
+		$this->assertFalse(Validation::date('13 2006', array('my')));
 	}
 
 /**
@@ -1439,12 +1440,14 @@ class ValidationTest extends CakeTestCase {
 		$this->assertTrue(Validation::date('2006 12', array('ym')));
 		$this->assertTrue(Validation::date('1900-01', array('ym')));
 		$this->assertTrue(Validation::date('2153-01', array('ym')));
+		$this->assertTrue(Validation::date('06/12', array('ym')));
+		$this->assertTrue(Validation::date('06-12', array('ym')));
+		$this->assertTrue(Validation::date('06-12', array('ym')));
+		$this->assertTrue(Validation::date('06 12', array('ym')));
 		$this->assertFalse(Validation::date('2006/12 ', array('ym')));
 		$this->assertFalse(Validation::date('2006/12/', array('ym')));
-		$this->assertFalse(Validation::date('06/12', array('ym')));
-		$this->assertFalse(Validation::date('06-12', array('ym')));
-		$this->assertFalse(Validation::date('06-12', array('ym')));
-		$this->assertFalse(Validation::date('06 12', array('ym')));
+		$this->assertFalse(Validation::date('06/12 ', array('ym')));
+		$this->assertFalse(Validation::date('06/13 ', array('ym')));
 	}
 
 /**

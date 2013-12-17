@@ -130,7 +130,7 @@ class Hash {
 			if ($conditions) {
 				$filter = array();
 				foreach ($next as $item) {
-					if (self::_matches($item, $conditions)) {
+					if (is_array($item) && self::_matches($item, $conditions)) {
 						$filter[] = $item;
 					}
 				}
@@ -553,7 +553,7 @@ class Hash {
 	}
 
 /**
- * Expand/unflattens an string to an array
+ * Expands a flat array to a nested array.
  *
  * For example, unflattens an array that was collapsed with `Hash::flatten()`
  * into a multi-dimensional array. So, `array('0.Foo.Bar' => 'Far')` becomes
@@ -626,9 +626,7 @@ class Hash {
 		if (empty($data)) {
 			return false;
 		}
-		$values = array_values($data);
-		$str = implode('', $values);
-		return (bool)ctype_digit($str);
+		return $data === array_filter($data, 'is_numeric');
 	}
 
 /**

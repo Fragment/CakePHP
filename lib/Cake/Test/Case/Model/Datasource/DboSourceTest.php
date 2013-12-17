@@ -2,13 +2,12 @@
 /**
  * DboSourceTest file
  *
- * PHP 5
- *
  * CakePHP(tm) Tests <http://book.cakephp.org/2.0/en/development/testing.html>
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
- *	Licensed under The Open Group Test Suite License
- *	Redistributions of files must retain the above copyright notice.
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
+ * Redistributions of files must retain the above copyright notice.
  *
  * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
@@ -24,6 +23,7 @@ App::uses('DboSource', 'Model/Datasource');
 App::uses('DboTestSource', 'Model/Datasource');
 App::uses('DboSecondTestSource', 'Model/Datasource');
 App::uses('MockDataSource', 'Model/Datasource');
+
 require_once dirname(dirname(__FILE__)) . DS . 'models.php';
 
 /**
@@ -1143,7 +1143,7 @@ class DboSourceTest extends CakeTestCase {
 			),
 			$this->Model
 		);
-		$expected = 'SELECT DISTINCT(AssetsTag.asset_id) FROM assets_tags AS AssetsTag   WHERE Tag.name = foo bar  GROUP BY AssetsTag.asset_id  ';
+		$expected = 'SELECT DISTINCT(AssetsTag.asset_id) FROM assets_tags AS AssetsTag   WHERE Tag.name = foo bar  GROUP BY AssetsTag.asset_id';
 		$this->assertEquals($expected, $subQuery);
 	}
 

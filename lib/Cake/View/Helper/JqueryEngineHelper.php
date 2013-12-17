@@ -8,8 +8,6 @@
  * support all options found in the JsHelper, as well as those in the jQuery
  * documentation.
  *
- * PHP 5
- *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -271,7 +269,7 @@ class JqueryEngineHelper extends JsBaseEngineHelper {
 			$options['success'] = $success;
 			unset($options['update']);
 		}
-		$callbacks = array('success', 'error', 'beforeSend', 'complete');
+		$callbacks = array('success', 'error', 'beforeSend', 'complete', 'xhr');
 		if (!empty($options['dataExpression'])) {
 			$callbacks[] = 'data';
 			unset($options['dataExpression']);
