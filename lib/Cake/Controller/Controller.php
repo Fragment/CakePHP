@@ -86,7 +86,7 @@ class Controller extends Object implements CakeEventListener {
 
 /**
  * An array containing the names of helpers this controller uses. The array elements should
- * not contain the "Helper" part of the classname.
+ * not contain the "Helper" part of the class name.
  *
  * Example: `public $helpers = array('Html', 'Js', 'Time', 'Ajax');`
  *
@@ -114,7 +114,7 @@ class Controller extends Object implements CakeEventListener {
 	public $response;
 
 /**
- * The classname to use for creating the response object.
+ * The class name to use for creating the response object.
  *
  * @var string
  */
@@ -182,7 +182,7 @@ class Controller extends Object implements CakeEventListener {
 
 /**
  * Array containing the names of components this controller uses. Component names
- * should not contain the "Component" portion of the classname.
+ * should not contain the "Component" portion of the class name.
  *
  * Example: `public $components = array('Session', 'RequestHandler', 'Acl');`
  *
@@ -713,7 +713,7 @@ class Controller extends Object implements CakeEventListener {
 
 /**
  * Loads and instantiates models required by this controller.
- * If the model is non existent, it will throw a missing database table error, as Cake generates
+ * If the model is non existent, it will throw a missing database table error, as CakePHP generates
  * dynamic models for the time being.
  *
  * @param string $modelClass Name of model class to load
@@ -1108,7 +1108,7 @@ class Controller extends Object implements CakeEventListener {
  *
  * If this method returns false the controller will not continue on to redirect the request.
  * The $url, $status and $exit variables have same meaning as for the controller's method. You can also
- * return a string which will be interpreted as the url to redirect to or return associative array with
+ * return a string which will be interpreted as the URL to redirect to or return associative array with
  * key 'url' and optionally 'status' and 'exit'.
  *
  * @param string|array $url A string or array-based URL pointing to another location within the app,
@@ -1117,7 +1117,7 @@ class Controller extends Object implements CakeEventListener {
  * @param boolean $exit If true, exit() will be called after the redirect
  * @return mixed
  *   false to stop redirection event,
- *   string controllers a new redirection url or
+ *   string controllers a new redirection URL or
  *   array with the keys url, status and exit to be used by the redirect method.
  * @link http://book.cakephp.org/2.0/en/controllers.html#request-life-cycle-callbacks
  */

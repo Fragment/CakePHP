@@ -1,7 +1,6 @@
 <?php
 /**
  *
- * PHP 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -34,12 +33,14 @@ foreach ($fields as $field) {
 		}
 	}
 	if ($isKey !== true) {
-		if (!in_array($field, array('position')))
+		if (!in_array($field, array('position'))) {
 			echo "\t\t<dt><?php echo __('" . Inflector::humanize($field) . "'); ?></dt>\n";
-		if (in_array($field, array('active', 'featured')))
+		}
+		if (in_array($field, array('active', 'featured'))) {
 			echo "\t\t<dd>\n\t\t\t<?php echo (\${$singularVar}['{$modelClass}']['{$field}']) ? 'Yes' : 'No'; ?>\n\t\t\t&nbsp;\n\t\t</dd>\n";
-		elseif (!in_array($field, array('position')))
+		} elseif (!in_array($field, array('position'))) {
 			echo "\t\t<dd>\n\t\t\t<?php echo h(\${$singularVar}['{$modelClass}']['{$field}']); ?>\n\t\t\t&nbsp;\n\t\t</dd>\n";
+		}
 	}
 }
 ?>
@@ -97,12 +98,12 @@ foreach ($relations as $alias => $details):
 	<table cellpadding = "0" cellspacing = "0">
 	<tr>
 <?php
-			foreach ($details['fields'] as $field)
-			{
-				if (strpos($field, '_id') !== false)
+			foreach ($details['fields'] as $field) {
+				if (strpos($field, '_id') !== false) {
 					continue;
-				elseif (!in_array($field, array('created', 'body', 'description', 'position', 'slug')))
+				} elseif (!in_array($field, array('created', 'body', 'description', 'position', 'slug'))) {
 					echo "\t\t<th><?php echo __('" . Inflector::humanize($field) . "'); ?></th>\n";
+				}
 			}
 ?>
 		<th class="actions"><?php echo "<?php echo __('Actions'); ?>"; ?></th>
@@ -111,12 +112,13 @@ foreach ($relations as $alias => $details):
 echo "\t<?php foreach (\${$singularVar}['{$alias}'] as \${$otherSingularVar}): ?>\n";
 		echo "\t\t<tr>\n";
 			foreach ($details['fields'] as $field) {
-				if (strpos($field, '_id') !== false)
+				if (strpos($field, '_id') !== false) {
 					continue;
-				elseif (in_array($field, array('active', 'featured')))
+				} elseif (in_array($field, array('active', 'featured'))) {
 					echo "\t\t\t<td><?php echo (\${$otherSingularVar}['{$field}']) ? 'Yes' : 'No'; ?></td>\n";
-				elseif (!in_array($field, array('created', 'body', 'description', 'position', 'slug')))
+				} elseif (!in_array($field, array('created', 'body', 'description', 'position', 'slug'))) {
 					echo "\t\t\t<td><?php echo \${$otherSingularVar}['{$field}']; ?></td>\n";
+				}
 			}
 
 			echo "\t\t\t<td class=\"actions\">\n";

@@ -1,7 +1,6 @@
 <?php
 /**
  *
- * PHP 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -20,17 +19,17 @@
 <div class="<?php echo $pluralVar; ?> form">
 <?php 
 	$file = (in_array('src', $fields) || in_array('img', $fields)) ? true :  false;
-	if ($file)
+	if ($file) {
 		echo "<?php echo \$this->Form->create('{$modelClass}', array('type' => 'file')); ?>\n";
-	else
+	} else {
 		echo "<?php echo \$this->Form->create('{$modelClass}'); ?>\n";
+	}
 ?>
 	<fieldset>
 		<legend><?php printf("<?php echo __('%s %s'); ?>", Inflector::humanize($action), $singularHumanName); ?></legend>
 <?php
 		$foreignKeys = array();
-		if (isset($associations['belongsTo']) && !empty($associations['belongsTo']))
-		{
+		if (isset($associations['belongsTo']) && !empty($associations['belongsTo'])) {
 			foreach ($associations['belongsTo'] as $belongsTo)
 				$foreignKeys[] = $belongsTo['foreignKey'];
 		}
@@ -59,13 +58,13 @@
 	</fieldset>
 <?php
 	$ckeditor = array();
-	if (in_array('description', $fields))
+	if (in_array('description', $fields)) {
 		$ckeditor[] = "\t\tCKEDITOR.replace('data[{$modelClass}][description]', {toolbar: 'Basic'});\n";
-	if (in_array('body', $fields))
+	}
+	if (in_array('body', $fields)) {
 		$ckeditor[] = "\t\tCKEDITOR.replace('data[{$modelClass}][body]', {toolbar: 'Text'});\n";
-
-	if (!empty($ckeditor))
-	{
+	}
+	if (!empty($ckeditor)) {
 		echo  "\t<script>\n";
 		foreach ($ckeditor as $line)
 			echo $line;

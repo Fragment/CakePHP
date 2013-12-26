@@ -2,8 +2,6 @@
 /**
  * Methods for displaying presentation data in the view.
  *
- * PHP 5
- *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -539,7 +537,7 @@ class View extends Object {
 	public function renderCache($filename, $timeStart) {
 		$response = $this->response;
 		ob_start();
-		include ($filename);
+		include $filename;
 
 		$type = $response->mapType($response->type());
 		if (Configure::read('debug') > 0 && $type === 'html') {
@@ -1096,7 +1094,7 @@ class View extends Object {
  * Return all possible paths to find view files in order
  *
  * @param string $plugin Optional plugin name to scan for view files.
- * @param boolean $cached Set to true to force a refresh of view paths.
+ * @param boolean $cached Set to false to force a refresh of view paths. Default true.
  * @return array paths
  */
 	protected function _paths($plugin = null, $cached = true) {

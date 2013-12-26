@@ -1,6 +1,6 @@
 <?php
 /**
- * PHP 5
+ *
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -14,6 +14,7 @@
  * @since         CakePHP(tm) v 2.4.0
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 App::uses('AbstractPasswordHasher', 'Controller/Component/Auth');
 App::uses('Security', 'Utility');
 
@@ -36,6 +37,7 @@ class SimplePasswordHasher extends AbstractPasswordHasher {
  *
  * @param string $password Plain text password to hash.
  * @return string Password hash
+ * @link http://book.cakephp.org/2.0/en/core-libraries/components/authentication.html#hashing-passwords
  */
 	public function hash($password) {
 		return Security::hash($password, $this->_config['hashType'], true);
