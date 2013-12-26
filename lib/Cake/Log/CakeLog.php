@@ -426,12 +426,6 @@ class CakeLog {
 			$scope = $type;
 		}
 		
-		/*=====================================
-		 *	Bergshrund
-		 *=====================================*/
-		if(LIVE_SITE)
-			CakeLog::postLog($message, $type);
-		
 		$logged = false;
 		foreach (self::$_Collection->enabled() as $streamName) {
 			$logger = self::$_Collection->{$streamName};
@@ -447,6 +441,10 @@ class CakeLog {
 			}
 			$inScope = (count(array_intersect((array)$scope, $scopes)) > 0);
 			$correctLevel = in_array($type, $types);
+
+			if ($correctLevel && Configure::read('Site.live')) {
+				CakeLog::postLog($message, $type);
+			}
 
 			if (
 				// No config is a catch all (bc mode)
@@ -481,13 +479,12 @@ class CakeLog {
 		$log = array(
 			'data' => $message,
 			'type' => $type,
-			'host' => gethostname(),
 			'uri' => (!empty($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : 'Not Available'),
-			'site_id' => '' // SUMMIT SITE ID
+			'site_id' => Configure::read('Site.SUMMIT_ID')
 		);
 		$log = json_encode($log);
 		if($log) {
-			shell_exec('curl -X POST -m 2.5 -H '.escapeshellarg('Content-Type: application/json').' -H '.escapeshellarg('Accept: application/json').' -H '.escapeshellarg('Content-Length: '.strlen($log)).' --url '.escapeshellarg($url).' -d '.escapeshellarg($log));
+			shell_exec('curl -X POST -m 2 -H '.escapeshellarg('Content-Type: application/json').' -H '.escapeshellarg('Accept: application/json').' -H '.escapeshellarg('Content-Length: '.strlen($log)).' --url '.escapeshellarg($url).' -d '.escapeshellarg($log));
 		}
 	}
 
