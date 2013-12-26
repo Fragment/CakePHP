@@ -103,10 +103,6 @@ class JsonView extends View {
 	public function render($view = null, $layout = null) {
 		$return = null;
 		if (isset($this->viewVars['_serialize'])) {
-			if(!empty($this->viewVars['_flash']))
-				$this->viewVars['_serialize'][] = '_flash';
-			if(!empty($this->viewVars['_validationErrors']))
-				$this->viewVars['_serialize'][] = '_validationErrors';
 			$return = $this->_serialize($this->viewVars['_serialize']);
 		} elseif ($view !== false && $this->_getViewFileName($view)) {
 			$return = parent::render($view, false);
