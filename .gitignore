@@ -1,6 +1,5 @@
 # User specific & automatically generated files #
 #################################################
-/app/Config/database.php
 /app/tmp
 /lib/Cake/Console/Templates/skel/tmp/
 /plugins
@@ -19,3 +18,11 @@
 Icon?
 ehthumbs.db
 Thumbs.db
+
+/app/Config/core.php
+/app/Config/database.php
+/app/Config/email.php
+/app/Console/cake
+/app/tmp/*
+/app/webroot/files/*
+empty
