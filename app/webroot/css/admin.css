@@ -54,6 +54,7 @@ a img {border:none;}
 .index>h2:first-child {margin-bottom:18px;font-weight:bold;}
 
 div.actions {display:inline-block;}
+.related .actions {max-width:none;}
 div.view.related {padding-left:3%;border-left:1px solid rgb(200,200,200);}
 .view .actions {margin-top:12px;}
 
