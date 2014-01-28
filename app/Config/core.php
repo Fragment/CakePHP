@@ -218,7 +218,9 @@
 	Configure::write('Session', array(
 		'defaults' => 'php',
 		'timeout' => 1440,
-		'autoRegenerate' => true
+		'ini' => array(
+			'session.save_path' => TMP . DS . 'sessions'
+		)
 	));
 
 /**
