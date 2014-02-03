@@ -18,11 +18,11 @@
 ?>
 <div class="<?php echo $pluralVar; ?> index">
 	<h2><?php echo "<?php echo __('{$pluralHumanName}'); ?>"; ?></h2>
-	<table cellpadding="0" cellspacing="0">
+	<table class="table table-striped table-condensed table-bordered" cellpadding="0" cellspacing="0">
 	<tr>
 <?
 		foreach ($fields as $field): 
-			if (!in_array($field, array('created', 'body', 'description', 'position', 'slug'))) {
+			if (!in_array($field, array('created', 'body', 'description', 'position', 'slug', 'password'))) {
 				echo "\t\t<th><?php echo \$this->Paginator->sort('{$field}'); ?></th>\n";
 			}
 		endforeach;
@@ -46,16 +46,16 @@
 			if ($isKey !== true) {
 				if (in_array($field, array('active', 'featured'))) {
 					echo "\t\t<td><?php echo (\${$singularVar}['{$modelClass}']['{$field}']) ? 'Yes' : 'No'; ?>&nbsp;</td>\n";
-				} elseif (!in_array($field, array('created', 'body', 'description', 'position', 'slug'))) {
+				} elseif (!in_array($field, array('created', 'body', 'description', 'position', 'slug', 'password'))) {
 					echo "\t\t<td><?php echo h(\${$singularVar}['{$modelClass}']['{$field}']); ?>&nbsp;</td>\n";
 				}
 			}
 		}
 
-		echo "\t\t<td class=\"actions\">\n";
-		echo "\t\t\t<?php echo \$this->Html->link(__('View'), array('action' => 'view', \${$singularVar}['{$modelClass}']['{$primaryKey}'])); ?>\n";
-		echo "\t\t\t<?php echo \$this->Html->link(__('Edit'), array('action' => 'edit', \${$singularVar}['{$modelClass}']['{$primaryKey}'])); ?>\n";
-		echo "\t\t\t<?php echo \$this->Form->postLink(__('Delete'), array('action' => 'delete', \${$singularVar}['{$modelClass}']['{$primaryKey}']), null, __('Are you sure you want to delete \"%s\"?', \${$singularVar}['{$modelClass}']['{$displayField}'])); ?>\n";
+		echo "\t\t<td class=\"actions btn-group\">\n";
+		echo "\t\t\t<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-eye-open\"></span>', array('action' => 'view', \${$singularVar}['{$modelClass}']['{$primaryKey}']), array('class' => 'btn btn-default btn-sm', 'escapeTitle' => false, 'title' => 'View')); ?>\n";
+		echo "\t\t\t<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-pencil\"></span>', array('action' => 'edit', \${$singularVar}['{$modelClass}']['{$primaryKey}']), array('class' => 'btn btn-default btn-sm', 'escapeTitle' => false, 'title' => 'Edit')); ?>\n";
+		echo "\t\t\t<?php echo \$this->Form->postLink('<span class=\"glyphicon glyphicon-trash\"></span>', array('action' => 'delete', \${$singularVar}['{$modelClass}']['{$primaryKey}']), array('class' => 'btn btn-warning btn-sm', 'escapeTitle' => false, 'title' => 'Delete'), __('Are you sure you want to delete \"%s\"?', \${$singularVar}['{$modelClass}']['{$displayField}'])); ?>\n";
 		echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 
@@ -69,19 +69,21 @@
 	));
 	?>"; ?>
 	</p>
-	<div class="paging">
+	<ul class="pagination">
 	<?php
 		echo "<?php\n";
-		echo "\t\techo \$this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));\n";
-		echo "\t\techo \$this->Paginator->numbers(array('separator' => ''));\n";
-		echo "\t\techo \$this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));\n";
+		echo "\t\techo \$this->Paginator->prev('< ' . __('previous'), array('tag' => 'li'), null, array('class' => 'prev disabled', 'tag' => 'li', 'disabledTag' => 'a'));\n";
+		echo "\t\techo \$this->Paginator->numbers(array('separator' => '', 'tag' => 'li', 'currentClass' => 'active', 'currentTag' => 'a'));\n";
+		echo "\t\techo \$this->Paginator->next(__('next') . ' >', array('tag' => 'li'), null, array('class' => 'next disabled', 'tag' => 'li', 'disabledTag' => 'a'));\n";
 		echo "\t?>\n";
 	?>
-	</div>
-</div>
-<div class="actions">
-	<h3><?php echo "<?php echo __('Actions'); ?>"; ?></h3>
-	<ul>
-		<li><?php echo "<?php echo \$this->Html->link(__('New " . $singularHumanName . "'), array('action' => 'add')); ?>"; ?></li>
 	</ul>
 </div>
+<?php echo "<?php \$this->start('sidebar-left'); ?>\n"; ?>
+<div class="actions">
+	<h3 class="lead"><?php echo "<?php echo __('Actions'); ?>"; ?></h3>
+	<ul class="nav nav-pills nav-stacked">
+		<li><?php echo "<?php echo \$this->Html->link(__('<span class=\"glyphicon glyphicon-plus\"></span> New " . $singularHumanName . "'), array('action' => 'add'), array('escapeTitle' => false)); ?>"; ?></li>
+	</ul>
+</div>
+<?php echo "<?php \$this->end(); ?>"; ?>

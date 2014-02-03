@@ -18,7 +18,7 @@
 ?>
 <div class="<?php echo $pluralVar; ?> view">
 <h2><?php echo "<?php echo __('{$singularHumanName}'); ?>"; ?></h2>
-	<dl>
+	<dl class="dl-horizontal">
 <?php
 foreach ($fields as $field) {
 	$isKey = false;
@@ -46,9 +46,10 @@ foreach ($fields as $field) {
 ?>
 	</dl>
 </div>
+<?php echo "<?php \$this->start('sidebar-left'); ?>\n"; ?>
 <div class="actions">
-	<h3><?php echo "<?php echo __('Actions'); ?>"; ?></h3>
-	<ul>
+	<h3 class="lead"><?php echo "<?php echo __('Actions'); ?>"; ?></h3>
+	<ul class="nav nav-pills nav-stacked">
 <?php
 	echo "\t\t<li><?php echo \$this->Html->link(__('Edit " . $singularHumanName ."'), array('action' => 'edit', \${$singularVar}['{$modelClass}']['{$primaryKey}'])); ?> </li>\n";
 	echo "\t\t<li><?php echo \$this->Form->postLink(__('Delete " . $singularHumanName . "'), array('action' => 'delete', \${$singularVar}['{$modelClass}']['{$primaryKey}']), null, __('Are you sure you want to delete \"%s\"?', \${$singularVar}['{$modelClass}']['{$displayField}'])); ?> </li>\n";
@@ -57,11 +58,12 @@ foreach ($fields as $field) {
 ?>
 	</ul>
 </div>
+<? echo "<?php \$this->end(); ?>"; ?>
 <?php
 if (!empty($associations['hasOne'])) :
 	foreach ($associations['hasOne'] as $alias => $details): ?>
 	<div class="related">
-		<h3><?php echo "<?php echo __('Related " . Inflector::humanize($details['controller']) . "'); ?>"; ?></h3>
+		<h3 class="lead"><?php echo "<?php echo __('Related " . Inflector::humanize($details['controller']) . "'); ?>"; ?></h3>
 	<?php echo "<?php if (!empty(\${$singularVar}['{$alias}'])): ?>\n"; ?>
 		<dl>
 	<?php
@@ -72,11 +74,13 @@ if (!empty($associations['hasOne'])) :
 	?>
 		</dl>
 	<?php echo "<?php endif; ?>\n"; ?>
+	<?php echo "<?php \$this->start('sidebar-left'); ?>\n"; ?>
 		<div class="actions">
-			<ul>
+			<ul class="nav nav-pills nav-stacked">
 				<li><?php echo "<?php echo \$this->Html->link(__('Edit " . Inflector::humanize(Inflector::underscore($alias)) . "'), array('controller' => '{$details['controller']}', 'action' => 'edit', \${$singularVar}['{$alias}']['{$details['primaryKey']}'])); ?></li>\n"; ?>
 			</ul>
 		</div>
+	<?php echo "<?php \$this->end(); ?>"; ?>
 	</div>
 	<?php
 	endforeach;
@@ -93,9 +97,9 @@ foreach ($relations as $alias => $details):
 	$otherPluralHumanName = Inflector::humanize($details['controller']);
 	?>
 <div class="related view">
-	<h3><?php echo "<?php echo __('Related " . $otherPluralHumanName . "'); ?>"; ?></h3>
+	<h3 class="lead"><?php echo "<?php echo __('Related " . $otherPluralHumanName . "'); ?>"; ?></h3>
 	<?php echo "<?php if (!empty(\${$singularVar}['{$alias}'])): ?>\n"; ?>
-	<table cellpadding = "0" cellspacing = "0">
+	<table class="table table-condensed table-bordered table-striped" cellpadding = "0" cellspacing = "0">
 	<tr>
 <?php
 			foreach ($details['fields'] as $field) {
@@ -121,10 +125,10 @@ echo "\t<?php foreach (\${$singularVar}['{$alias}'] as \${$otherSingularVar}): ?
 				}
 			}
 
-			echo "\t\t\t<td class=\"actions\">\n";
-			echo "\t\t\t\t<?php echo \$this->Html->link(__('View'), array('controller' => '{$details['controller']}', 'action' => 'view', \${$otherSingularVar}['{$details['primaryKey']}'])); ?>\n";
-			echo "\t\t\t\t<?php echo \$this->Html->link(__('Edit'), array('controller' => '{$details['controller']}', 'action' => 'edit', \${$otherSingularVar}['{$details['primaryKey']}'])); ?>\n";
-			echo "\t\t\t\t<?php echo \$this->Form->postLink(__('Delete'), array('controller' => '{$details['controller']}', 'action' => 'delete', \${$otherSingularVar}['{$details['primaryKey']}']), null, __('Are you sure you want to delete \"%s\"?', \${$otherSingularVar}['{$details['displayField']}'])); ?>\n";
+			echo "\t\t\t<td class=\"actions btn-group\">\n";
+			echo "\t\t\t\t<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-eye-open\"></span>', array('controller' => '{$details['controller']}', 'action' => 'view', \${$otherSingularVar}['{$details['primaryKey']}']), array('class' => 'btn btn-default btn-sm', 'escapeTitle' => false, 'title' => 'View')); ?>\n";
+			echo "\t\t\t\t<?php echo \$this->Html->link('<span class=\"glyphicon glyphicon-pencil\"></span>', array('controller' => '{$details['controller']}', 'action' => 'edit', \${$otherSingularVar}['{$details['primaryKey']}']), array('class' => 'btn btn-default btn-sm', 'escapeTitle' => false, 'title' => 'Edit')); ?>\n";
+			echo "\t\t\t\t<?php echo \$this->Form->postLink('<span class=\"glyphicon glyphicon-trash\"></span>', array('controller' => '{$details['controller']}', 'action' => 'delete', \${$otherSingularVar}['{$details['primaryKey']}']), array('escapeTitle' => false, 'title' => 'Delete', 'class' => 'btn btn-sm btn-warning'), __('Are you sure you want to delete \"%s\"?', \${$otherSingularVar}['{$details['displayField']}'])); ?>\n";
 			echo "\t\t\t</td>\n";
 		echo "\t\t</tr>\n";
 
@@ -132,10 +136,12 @@ echo "\t<?php endforeach; ?>\n";
 ?>
 	</table>
 <?php echo "<?php endif; ?>\n\n"; ?>
+<?php echo "<?php \$this->start('sidebar-left'); ?>\n"; ?>
 	<div class="actions">
-		<ul>
+		<ul class="nav nav-pills nav-stacked">
 			<li><?php echo "<?php echo \$this->Html->link(__('New " . Inflector::humanize(Inflector::underscore($alias)) . "'), array('controller' => '{$details['controller']}', 'action' => 'add', \${$singularVar}['{$modelClass}']['{$primaryKey}'])); ?>"; ?> </li>
 		</ul>
 	</div>
+<?php echo "<?php \$this->end(); ?>"; ?>
 </div>
 <?php endforeach; ?>

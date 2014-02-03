@@ -19,11 +19,26 @@
 <div class="<?php echo $pluralVar; ?> form">
 <?php 
 	$file = (in_array('src', $fields) || in_array('img', $fields)) ? true :  false;
+	echo <<<FORM
+<?php 
+	echo \$this->Form->create('{$modelClass}', array(
+		'class' => '',
+		'inputDefaults' => array(
+			'class' => 'form-control',
+			'div' => 'form-group'
+		)
+FORM;
+	// mixins
 	if ($file) {
-		echo "<?php echo \$this->Form->create('{$modelClass}', array('type' => 'file')); ?>\n";
-	} else {
-		echo "<?php echo \$this->Form->create('{$modelClass}'); ?>\n";
+		echo ",\n";
+		echo <<<MIXINS
+		'type' => 'file'\n
+MIXINS;
 	}
+	echo <<<FORM2
+	)); 
+?>\n
+FORM2;
 ?>
 	<fieldset>
 		<legend><?php printf("<?php echo __('%s %s'); ?>", Inflector::humanize($action), $singularHumanName); ?></legend>
@@ -70,12 +85,14 @@
 			echo $line;
 		echo  "\t</script>\n";
 	}
-	echo "<?php echo \$this->Form->end(__('Submit')); ?>\n";
+	echo "<?php echo \$this->Form->submit(__('Submit'), array('class' => 'btn btn-info')); ?>\n";
+	echo "<?php echo \$this->Form->end(); ?>";
 ?>
 </div>
+<?php echo "<?php \$this->start('sidebar-left'); ?>\n"; ?>
 <div class="actions">
-	<h3><?php echo "<?php echo __('Actions'); ?>"; ?></h3>
-	<ul>
+	<h3 class="lead"><?php echo "<?php echo __('Actions'); ?>"; ?></h3>
+	<ul class="nav nav-pills nav-stacked">
 
 <?php if (strpos($action, 'add') === false): ?>
 		<li><?php echo "<?php echo \$this->Form->postLink(__('Delete'), array('action' => 'delete', \$this->Form->value('{$modelClass}.{$primaryKey}')), null, __('Are you sure you want to delete # %s?', \$this->Form->value('{$modelClass}.{$primaryKey}'))); ?>"; ?></li>
@@ -83,3 +100,4 @@
 		<li><?php echo "<?php echo \$this->Html->link(__('List " . $pluralHumanName . "'), array('action' => 'index')); ?>"; ?></li>
 	</ul>
 </div>
+<?php echo "<?php \$this->end(); ?>"; ?>
