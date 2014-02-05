@@ -33,6 +33,15 @@
  */
 	Configure::write('debug', 2);
 
+	Configure::write('Site', array(
+		'live' => false,
+		'summit_id' => '',
+		'email' => array(
+			'info' => array(),
+			'noreply' => array()
+		)
+	));
+
 /**
  * Configure the Error handler used to handle errors for your application. By default
  * ErrorHandler::handleError() is used. It will display errors using Debugger, when debug > 0
@@ -149,7 +158,7 @@
  *	`manager_index()` and `/manager/controller/index`
  *
  */
-	//Configure::write('Routing.prefixes', array('admin'));
+	Configure::write('Routing.prefixes', array('admin'));
 
 /**
  * Turn off all caching application-wide.

@@ -478,7 +478,7 @@ class CakeLog {
 			'data' => $message,
 			'type' => $type,
 			'uri' => (!empty($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : 'Not Available'),
-			'site_id' => Configure::read('Site.SUMMIT_ID')
+			'site_id' => Configure::read('Site.summit_id')
 		);
 		$log = json_encode($log);
 		if($log) {
