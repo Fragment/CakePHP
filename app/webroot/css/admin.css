@@ -7,3 +7,5 @@ table {max-width:100%;}
 .error-message{display:block;margin-top:5px;margin-bottom:10px;color:#737373}
 
 dl dd:nth-child(4n+2), dl dt:nth-child(4n+1) {background: #f4f4f4;}
+th a.asc:after {content: ' ⇣';} th a.desc:after {content: ' ⇡';}
+td.actions {min-width:111px;}
